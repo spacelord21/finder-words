@@ -16,9 +16,14 @@ export const darkTheme = {
     },
   },
   typography: {
+    largeTitle: {
+      size: "34px",
+      fontFamily: "ROBOTO_REGULAR",
+      letterSpacing: "0px",
+    },
     title: {
       size: "24px",
-      fontFamily: "ROBOTO_LIGHT",
+      fontFamily: "ROBOTO_REGULAR",
       letterSpacing: "0px",
     },
     subtitle: {

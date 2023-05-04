@@ -1,1 +1,6 @@
-export type TypographyVariants = "title" | "subtitle" | "body16" | "caption";
+export type TypographyVariants =
+  | "largeTitle"
+  | "title"
+  | "subtitle"
+  | "body16"
+  | "caption";
