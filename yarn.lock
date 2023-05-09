@@ -3168,6 +3168,18 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
+effector-react@^22.5.1:
+  version "22.5.1"
+  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-22.5.1.tgz#09e7ef9a9328edf1ff4f4fcd50b0f4ff98980a52"
+  integrity sha512-Sy5b/sUEZoCuyoCr+SiHcgd0L+PQqnIGx+SuPCZ7MhECYxezkkeecsk0EVj9sykLL2qlEeg+rdiWvIATJgOTeA==
+  dependencies:
+    use-sync-external-store "^1.0.0"
+
+effector@^22.8.2:
+  version "22.8.2"
+  resolved "https://registry.yarnpkg.com/effector/-/effector-22.8.2.tgz#dc5470cc8c51eb84b5e2210398644ccf749a7a65"
+  integrity sha512-Utl/gT/wDtcnVKDOToS4xuGDt1INzhsGF5TGnDGdbSS6BbV0C2JPAjo8tBi+0ZK1M5Gj8sEW/WFuv+RoH2V+oQ==
+
 electron-to-chromium@^1.4.284:
   version "1.4.380"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.380.tgz#195dc59d930c6b74efbee6f0e6a267ce4af5ed91"

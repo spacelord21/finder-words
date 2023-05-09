@@ -1,5 +1,7 @@
 import { TMainStackParamList } from "@app/navigation/types";
-import { TCategory, categories } from "@entities/categories";
+import { categories } from "@entities/categories";
+import { setGameMode } from "@entities/game";
+import { TGameMode, TCategory } from "@entities/types";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Typography, styled } from "@shared/ui";
@@ -27,11 +29,16 @@ type Navigation = NativeStackNavigationProp<TMainStackParamList, "main">;
 
 export const Categories = () => {
   const navigation = useNavigation<Navigation>();
+  const onPressHandler = (mode: TGameMode) => {
+    setGameMode(mode);
+    navigation.navigate("game");
+  };
+
   const renderItem: ListRenderItem<TCategory> = ({ item }) => {
     return (
       <CategoryItem
         activeOpacity={0.7}
-        onPress={() => navigation.navigate("game")}
+        onPress={() => onPressHandler(item.mode)}
       >
         <Text variant="title">{item.title}</Text>
       </CategoryItem>
