@@ -14,6 +14,8 @@ export const darkTheme = {
     },
     accent: {
       primary: "#66b2ff",
+      success: "#53CC2E",
+      wrongPlace: "#FFB13D",
     },
   },
   typography: {
