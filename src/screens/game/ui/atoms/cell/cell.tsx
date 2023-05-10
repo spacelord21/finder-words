@@ -1,6 +1,7 @@
 import { $gameState } from "@entities/game";
 import { Typography, styled } from "@shared/ui";
 import { useStore } from "effector-react";
+import { useEffect, useMemo } from "react";
 import { useTheme } from "styled-components";
 
 type TCellProps = {
@@ -31,13 +32,14 @@ const Value = styled(Typography)`
 export const Cell = ({ size, value, index, isCurrent }: TCellProps) => {
   const { word } = useStore($gameState);
   const theme = useTheme();
-  const wordArray = word.split("");
-  const color =
-    wordArray.includes(value!) && !isCurrent
+  const color = useMemo(() => {
+    const wordArray = word.split("");
+    return wordArray.includes(value!) && !isCurrent
       ? wordArray[index] === value
         ? theme.palette.accent.success
         : theme.palette.accent.wrongPlace
       : theme.palette.background.tertiary;
+  }, [word]);
   return (
     <Container size={size} color={color}>
       <Value variant="title">{value ?? ""}</Value>
