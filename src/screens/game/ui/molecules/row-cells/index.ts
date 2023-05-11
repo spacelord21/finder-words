@@ -1,1 +1,1 @@
-export { RowCells, CellsMemo } from "./row-cells";
+export { RowCells } from "./row-cells";

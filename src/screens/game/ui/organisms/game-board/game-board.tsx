@@ -1,21 +1,26 @@
-import { $gameMode, $gameState, checkGuess } from "@entities/game";
+import { $gameMode, $gameState } from "@entities/game";
 import { gameInfoByMode } from "@entities/types";
 import { Typography, styled } from "@shared/ui";
 import { useStore } from "effector-react";
-import { CellsMemo, RowCells } from "../../molecules";
-import {
-  TouchableOpacity,
-  FlatList,
-  ListRenderItem,
-  Dimensions,
-} from "react-native";
-import { useEffect, useState } from "react";
+import { RowCells } from "../../molecules";
+import { FlatList, ListRenderItem, Dimensions } from "react-native";
+import { useState } from "react";
 import { CustomKeyboard } from "@widgets/custom-keyboard";
 
 const Container = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+`;
+
+const Title = styled(Typography)`
+  margin-top: ${({ theme }) => theme.spacing(6)}px;
+  margin-bottom: ${({ theme }) => theme.spacing(2)}px;
+  color: ${({ theme }) => theme.palette.text.secondary};
+`;
+
+const Board = styled(FlatList<string>)`
+  flex: 1.6;
 `;
 
 export const GameBoard = () => {
@@ -28,7 +33,7 @@ export const GameBoard = () => {
 
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
     return (
-      <CellsMemo
+      <RowCells
         wordLength={gameInfo[mode!].letters}
         word={
           index == attempt
@@ -45,7 +50,8 @@ export const GameBoard = () => {
 
   return (
     <Container>
-      <FlatList
+      <Title variant="largeTitle">Угадайте слово!</Title>
+      <Board
         data={new Array(gameInfo[mode!].attempts).fill(0)}
         renderItem={renderItem}
         contentContainerStyle={{
@@ -55,14 +61,6 @@ export const GameBoard = () => {
         }}
       />
       <CustomKeyboard setValue={setGuess} value={guess} />
-      <TouchableOpacity
-        onPress={() => {
-          checkGuess(guess.toLocaleLowerCase());
-          setGuess("");
-        }}
-      >
-        <Typography>Enter</Typography>
-      </TouchableOpacity>
     </Container>
   );
 };

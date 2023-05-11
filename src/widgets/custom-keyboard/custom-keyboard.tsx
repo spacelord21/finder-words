@@ -1,6 +1,6 @@
 import { styled } from "@shared/ui";
 import { keyboard } from "./keyboard";
-import { Button, MemoButton } from "./button";
+import { MemoButton } from "./button";
 import { Dimensions, FlatList, ListRenderItem } from "react-native";
 
 const Container = styled.View`
@@ -9,14 +9,14 @@ const Container = styled.View`
 `;
 
 type TCustomKeyboardProps = {
-  value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
+  value: string;
 };
 
 const buttonSize =
-  Dimensions.get("screen").width / keyboard["firstLevel"].length - 8;
+  Dimensions.get("screen").width / keyboard["firstLevel"].length - 4;
 
-export const CustomKeyboard = ({ setValue, value }: TCustomKeyboardProps) => {
+export const CustomKeyboard = ({ setValue }: TCustomKeyboardProps) => {
   const renderButton: ListRenderItem<string> = ({ item: content }) => {
     return (
       <MemoButton

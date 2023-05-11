@@ -1,18 +1,9 @@
 import { styled } from "@shared/ui";
-import { Dimensions, FlatList, ListRenderItem } from "react-native";
-import { Cell } from "../../atoms";
-import { useStore } from "effector-react";
-import { $gameState } from "@entities/game";
-import React from "react";
+import { FlatList, ListRenderItem } from "react-native";
+import { MemoCell } from "../../atoms/cell";
 
 const Container = styled.Pressable`
-  /* width: 80%; */
   flex-direction: column;
-`;
-
-const CellContainer = styled.View`
-  justify-content: space-evenly;
-  flex-direction: row;
 `;
 
 type TRowCellsProps = {
@@ -31,7 +22,7 @@ export const RowCells = ({
 
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
     return (
-      <Cell
+      <MemoCell
         key={index}
         size={cellSize}
         value={word[index]}
@@ -57,9 +48,3 @@ export const RowCells = ({
     </Container>
   );
 };
-
-const propsAreEqual = (prevProp: TRowCellsProps, nextProp: TRowCellsProps) => {
-  return prevProp.word === nextProp.word;
-};
-
-export const CellsMemo = React.memo(RowCells, propsAreEqual);

@@ -1,1 +1,1 @@
-export { Cell } from "./cell";
+export { Cell, MemoCell } from "./cell";

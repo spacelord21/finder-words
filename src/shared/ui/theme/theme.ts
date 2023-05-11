@@ -11,11 +11,20 @@ export const darkTheme = {
     text: {
       primary: "#FFFFFF",
       secondary: "#66b2ff",
+      dark: "#1a1a1b",
     },
     accent: {
       primary: "#66b2ff",
       success: "#53CC2E",
       wrongPlace: "#FFB13D",
+    },
+    keyboard: {
+      white: "#d3d6da",
+      dark: "#787c7e",
+      enter: "#017f70",
+      yellow: "#c9b458",
+      backspace: "#414443",
+      green: "#6aaa64",
     },
   },
   typography: {
