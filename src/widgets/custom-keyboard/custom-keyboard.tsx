@@ -13,10 +13,9 @@ type TCustomKeyboardProps = {
   value: string;
 };
 
-const buttonSize =
-  Dimensions.get("screen").width / keyboard["firstLevel"].length - 4;
-
 export const CustomKeyboard = ({ setValue }: TCustomKeyboardProps) => {
+  const buttonSize =
+    Dimensions.get("screen").width / keyboard["firstLevel"].length - 4;
   const renderButton: ListRenderItem<string> = ({ item: content }) => {
     return (
       <MemoButton

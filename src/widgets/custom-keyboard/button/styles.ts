@@ -4,9 +4,9 @@ import { TKeyboardButton } from "./button";
 export const KeyboardButton = styled.TouchableOpacity.attrs(({}) => ({
   delayPressOut: 70,
   activeOpacity: 0.85,
-}))<Pick<TKeyboardButton, "backgroundColor" | "buttonSize">>`
-  width: ${({ buttonSize }) => buttonSize}px;
-  height: ${({ buttonSize }) => buttonSize + 20}px;
+}))<Pick<TKeyboardButton, "backgroundColor" | "width" | "height">>`
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height + 20}px;
   justify-content: center;
   align-items: center;
   background-color: ${({ backgroundColor }) => backgroundColor};

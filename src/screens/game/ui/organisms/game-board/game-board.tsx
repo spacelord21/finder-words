@@ -29,7 +29,7 @@ export const GameBoard = () => {
   const { previousGuesses, attempt } = useStore($gameState);
   const [guess, setGuess] = useState("");
   const cellSize =
-    Dimensions.get("screen").width / gameInfo[mode!].letters - 32;
+    Dimensions.get("screen").width / gameInfo[mode ?? "4_LETTERS"].letters - 32;
 
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
     return (
@@ -52,7 +52,7 @@ export const GameBoard = () => {
     <Container>
       <Title variant="largeTitle">Угадайте слово!</Title>
       <Board
-        data={new Array(gameInfo[mode!].attempts).fill(0)}
+        data={new Array(gameInfo[mode ?? "4_LETTERS"].attempts).fill(0)}
         renderItem={renderItem}
         contentContainerStyle={{
           flexDirection: "column",

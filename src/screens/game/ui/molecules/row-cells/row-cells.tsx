@@ -9,17 +9,16 @@ const Container = styled.Pressable`
 type TRowCellsProps = {
   wordLength: number;
   word: string;
-  isCurrent: boolean;
   cellSize: number;
+  isCurrent: boolean;
 };
 export const RowCells = ({
   wordLength,
   word,
-  isCurrent,
   cellSize,
+  isCurrent,
 }: TRowCellsProps) => {
   const mockArray = new Array(wordLength).fill(0);
-
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
     return (
       <MemoCell
@@ -28,6 +27,7 @@ export const RowCells = ({
         value={word[index]}
         index={index}
         isCurrent={isCurrent}
+        isCurrentCell={word.length == index && isCurrent}
       />
     );
   };

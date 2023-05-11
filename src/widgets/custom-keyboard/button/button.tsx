@@ -7,7 +7,8 @@ import { ButtonContent } from "./button-content";
 export type TKeyboardButton = {
   color: string;
   backgroundColor: string;
-  buttonSize: number;
+  width: number;
+  height: number;
 };
 
 type TButtonProps = {
@@ -18,14 +19,18 @@ type TButtonProps = {
 
 export const Button = ({ content, setValue, buttonSize }: TButtonProps) => {
   const theme = useTheme();
-  const { letterColor, notLettersColor } = useButtonsColor(content);
+  const { letterBackgroundColor, notLettersBackgroundColor, letterColor } =
+    useButtonsColor(content);
   const { onPressHandler } = useButtonsPressHandler(setValue);
 
   return (
     <KeyboardButton
-      buttonSize={buttonSize}
+      width={content === ">" || content === "<" ? buttonSize + 10 : buttonSize}
+      height={buttonSize}
       backgroundColor={
-        notLettersColor ? notLettersColor : theme.palette.keyboard.white
+        notLettersBackgroundColor
+          ? notLettersBackgroundColor
+          : letterBackgroundColor
       }
       onPress={() => onPressHandler(content)}
     >

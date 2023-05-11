@@ -15,8 +15,8 @@ export const darkTheme = {
     },
     accent: {
       primary: "#66b2ff",
-      success: "#53CC2E",
-      wrongPlace: "#FFB13D",
+      success: "#6aaa64",
+      wrongPlace: "#c9b458",
     },
     keyboard: {
       white: "#d3d6da",
