@@ -4,7 +4,7 @@ import { Typography, styled } from "@shared/ui";
 import { useStore } from "effector-react";
 import { RowCells } from "../../molecules";
 import { FlatList, ListRenderItem, Dimensions } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomKeyboard } from "@widgets/custom-keyboard";
 
 const Container = styled.View`
@@ -28,8 +28,7 @@ export const GameBoard = () => {
   const mode = useStore($gameMode);
   const { previousGuesses, attempt } = useStore($gameState);
   const [guess, setGuess] = useState("");
-  const cellSize =
-    Dimensions.get("screen").width / gameInfo[mode ?? "4_LETTERS"].letters - 32;
+  const cellSize = Dimensions.get("screen").width / gameInfo[mode].letters - 32;
 
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
     return (
@@ -52,7 +51,7 @@ export const GameBoard = () => {
     <Container>
       <Title variant="largeTitle">Угадайте слово!</Title>
       <Board
-        data={new Array(gameInfo[mode ?? "4_LETTERS"].attempts).fill(0)}
+        data={new Array(gameInfo[mode].attempts).fill(0)}
         renderItem={renderItem}
         contentContainerStyle={{
           flexDirection: "column",
@@ -60,7 +59,7 @@ export const GameBoard = () => {
           alignContent: "center",
         }}
       />
-      <CustomKeyboard setValue={setGuess} value={guess} />
+      <CustomKeyboard setValue={setGuess} />
     </Container>
   );
 };

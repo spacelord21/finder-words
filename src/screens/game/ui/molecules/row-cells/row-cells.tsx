@@ -1,6 +1,6 @@
 import { styled } from "@shared/ui";
 import { FlatList, ListRenderItem } from "react-native";
-import { MemoCell } from "../../atoms/cell";
+import { Cell, MemoCell } from "../../atoms/cell";
 
 const Container = styled.Pressable`
   flex-direction: column;

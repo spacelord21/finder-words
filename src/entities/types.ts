@@ -16,7 +16,7 @@ type TGameInfoByMode = {
 
 export const gameInfoByMode: TGameInfoByMode = {
   "3_LETTERS": {
-    attempts: 5,
+    attempts: 4,
     letters: 3,
   },
   "4_LETTERS": {

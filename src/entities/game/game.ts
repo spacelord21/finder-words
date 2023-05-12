@@ -2,7 +2,7 @@ import { TGameCondition, TGameMode } from "@entities/types";
 import { createEvent, createStore } from "effector";
 
 export const setGameMode = createEvent<TGameMode>();
-export const $gameMode = createStore<TGameMode | null>(null).on(
+export const $gameMode = createStore<TGameMode>("4_LETTERS").on(
   setGameMode,
   (_, mode) => mode
 );
@@ -10,7 +10,7 @@ export const $gameMode = createStore<TGameMode | null>(null).on(
 const initialGameState: TGameState = {
   attempt: 0,
   previousGuesses: [],
-  word: "волк",
+  word: "слой",
   correctLetters: [],
   wrong: [],
   wrongPlaceLetters: [],

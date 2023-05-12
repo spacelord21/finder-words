@@ -1,8 +1,7 @@
-import React from "react";
-import { useTheme } from "styled-components";
-import { useButtonsColor, useButtonsPressHandler } from "./hooks";
+import React, { SetStateAction } from "react";
 import { KeyboardButton } from "./styles";
 import { ButtonContent } from "./button-content";
+import { useButtonsColor, useButtonsPressHandler } from "../hooks";
 
 export type TKeyboardButton = {
   color: string;
@@ -13,16 +12,14 @@ export type TKeyboardButton = {
 
 type TButtonProps = {
   content: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
   buttonSize: number;
+  setValue: React.Dispatch<SetStateAction<string>>;
 };
 
-export const Button = ({ content, setValue, buttonSize }: TButtonProps) => {
-  const theme = useTheme();
-  const { letterBackgroundColor, notLettersBackgroundColor, letterColor } =
+export const Button = ({ content, buttonSize, setValue }: TButtonProps) => {
+  const { letterBackgroundColor, letterColor, notLettersBackgroundColor } =
     useButtonsColor(content);
   const { onPressHandler } = useButtonsPressHandler(setValue);
-
   return (
     <KeyboardButton
       width={content === ">" || content === "<" ? buttonSize + 10 : buttonSize}

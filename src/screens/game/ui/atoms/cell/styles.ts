@@ -7,14 +7,21 @@ export const Container = styled.View<
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   border-radius: 5px;
-  border: 1px dotted ${({ theme }) => theme.palette.text.primary};
+  border-color: ${({ theme, isCurrentCell, value }) =>
+    isCurrentCell
+      ? theme.palette.text.secondary
+      : value
+      ? "transparent"
+      : theme.palette.text.primary};
+  border-style: ${({ isCurrentCell }) => (isCurrentCell ? "solid" : "dotted")};
+  border-width: ${({ isCurrentCell }) => (isCurrentCell ? 3 : 1.5)}px;
   background-color: ${({ color }) => color};
   justify-content: center;
-  align-items: ${({ isCurrentCell }) =>
-    isCurrentCell ? "flex-start" : "center"};
+  align-items: center;
   margin-left: ${({ theme }) => theme.spacing(0.5)}px;
   margin-right: ${({ theme }) => theme.spacing(0.5)}px;
   margin-top: ${({ theme }) => theme.spacing(1)}px;
+  backface-visibility: hidden;
 `;
 
 export const Value = styled(Typography)`
@@ -24,8 +31,8 @@ export const Value = styled(Typography)`
 
 export const Stick = styled.View<Omit<TCellProps, "index" | "value">>`
   height: ${({ size }) => size - 10}px;
+  width: 2px;
   align-items: center;
-  width: ${({ isCurrentCell }) => (isCurrentCell ? 2 : 0)}px;
   background-color: ${({ theme }) => theme.palette.keyboard.white};
   margin-left: ${({ theme }) => theme.spacing(1)}px;
 `;

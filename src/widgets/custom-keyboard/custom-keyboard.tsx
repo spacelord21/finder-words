@@ -10,12 +10,12 @@ const Container = styled.View`
 
 type TCustomKeyboardProps = {
   setValue: React.Dispatch<React.SetStateAction<string>>;
-  value: string;
 };
 
 export const CustomKeyboard = ({ setValue }: TCustomKeyboardProps) => {
   const buttonSize =
     Dimensions.get("screen").width / keyboard["firstLevel"].length - 4;
+
   const renderButton: ListRenderItem<string> = ({ item: content }) => {
     return (
       <MemoButton
