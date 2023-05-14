@@ -1,9 +1,10 @@
 import { $gameState } from "@entities/game";
 import { useStore } from "effector-react";
-import React, { useCallback, useEffect, useRef } from "react";
+import React from "react";
 import { useTheme } from "styled-components";
-import { Container, Stick, Value } from "./styles";
+import { Container, Value } from "./styles";
 import { Animated } from "react-native";
+import { useLetterAppearance, useRotate } from "./hooks";
 
 export type TCellProps = {
   size: number;
@@ -31,36 +32,19 @@ export const Cell = ({
       : wrong.includes(value!)
       ? theme.palette.keyboard.backspace
       : theme.palette.background.tertiary;
-  const animRef = useRef(new Animated.Value(0)).current;
-
-  const anim = useCallback(() => {
-    Animated.timing(animRef, {
-      toValue: 1,
-      useNativeDriver: true,
-      duration: 500,
-    }).start();
-  }, [value]);
-
-  const spin = animRef.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
-  });
-
-  useEffect(() => {
-    anim();
-    return () => animRef.resetAnimation();
-  }, [color]);
+  const { rotate } = useRotate(isCurrent, value);
+  const { opacityRef } = useLetterAppearance(value);
 
   return (
     <Animated.View
       style={{
-        transform: [{ rotateX: spin }],
+        opacity: value === undefined ? 1 : opacityRef,
+        transform: [{ rotateX: rotate }],
       }}
     >
       <Container
         size={size}
         color={color}
-        isCurrent={isCurrent}
         isCurrentCell={isCurrentCell}
         value={value}
       >

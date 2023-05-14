@@ -1,9 +1,9 @@
 import { styled } from "@shared/ui";
-import { FlatList, ListRenderItem } from "react-native";
-import { Cell, MemoCell } from "../../atoms/cell";
+import { FlatList, ListRenderItem, VirtualizedList } from "react-native";
+import { MemoCell } from "../../atoms/cell";
 
 const Container = styled.Pressable`
-  flex-direction: column;
+  flex-direction: row;
 `;
 
 type TRowCellsProps = {
@@ -38,10 +38,9 @@ export const RowCells = ({
         data={mockArray}
         renderItem={renderItem}
         contentContainerStyle={{
-          flexDirection: "row",
+          flexGrow: 1,
           justifyContent: "center",
           alignItems: "center",
-          flexGrow: 1,
         }}
         horizontal
       />
