@@ -25,11 +25,11 @@ export const Cell = ({
   const theme = useTheme();
   const wordArray = word.split("");
   const color =
-    wordArray.includes(value!) && !isCurrent
+    wordArray.includes(value!) && !isCurrent && !isCurrentCell
       ? wordArray[index] === value
         ? theme.palette.accent.success
         : theme.palette.accent.wrongPlace
-      : wrong.includes(value!)
+      : wrong.includes(value!) && !isCurrent
       ? theme.palette.keyboard.backspace
       : theme.palette.background.tertiary;
   const { rotate } = useRotate(isCurrent, value);
@@ -58,8 +58,8 @@ const shouldComponentUpdate = (prevProp: TCellProps, nextProp: TCellProps) => {
   return (
     prevProp.value === undefined &&
     prevProp.value === nextProp.value &&
-    prevProp.isCurrentCell === nextProp.isCurrentCell &&
-    prevProp.isCurrent === nextProp.isCurrent
+    prevProp.isCurrentCell === nextProp.isCurrentCell
+    // prevProp.isCurrent === nextProp.isCurrent
   );
 };
 

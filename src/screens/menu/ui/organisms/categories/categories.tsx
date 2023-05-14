@@ -1,7 +1,7 @@
 import { TMainStackParamList } from "@app/navigation/types";
 import { categories } from "@entities/categories";
-import { setGameMode } from "@entities/game";
-import { TGameMode, TCategory } from "@entities/types";
+import { getRandomWordFx, setGameMode, setGameWord } from "@entities/game";
+import { TGameMode, TCategory, gameInfoByMode } from "@entities/types";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Typography, styled } from "@shared/ui";
@@ -29,10 +29,16 @@ type Navigation = NativeStackNavigationProp<TMainStackParamList, "main">;
 
 export const Categories = () => {
   const navigation = useNavigation<Navigation>();
+  const gameInfo = gameInfoByMode;
   const onPressHandler = (mode: TGameMode) => {
     setGameMode(mode);
-    navigation.navigate("game");
+    getRandomWordFx(gameInfo[mode].letters);
   };
+
+  getRandomWordFx.doneData.watch((payload) => {
+    setGameWord(payload.word);
+    navigation.navigate("game");
+  });
 
   const renderItem: ListRenderItem<TCategory> = ({ item }) => {
     return (
