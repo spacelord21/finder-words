@@ -1,5 +1,6 @@
 import { TGameCondition, TGameMode } from "@entities/types";
-import { createEvent, createStore } from "effector";
+import { createEffect, createEvent, createStore } from "effector";
+import { getRandomWord } from "../api";
 
 export const setGameMode = createEvent<TGameMode>();
 export const $gameMode = createStore<TGameMode>("4_LETTERS").on(
@@ -31,6 +32,11 @@ export const $gameCondition = createStore<TGameCondition>("NOTSTARTED").on(
   (_, condition) => condition
 );
 export const $gameState = createStore<TGameState>(initialGameState);
+export const getRandomWordFx = createEffect<number, string, Error>(
+  async (letters) => {
+    return await getRandomWord(letters);
+  }
+);
 
 export const checkGuess = createEvent<string>();
 export const setGameWord = createEvent<string>();
