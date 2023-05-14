@@ -57,9 +57,6 @@ $gameState.on(checkGuess, (state, guess) => {
       wrong.push(guessInLetters[j]);
     }
   }
-  console.log(wrong);
-  console.log(wrongPlace);
-
   return {
     attempt: state.attempt + 1,
     previousGuesses: [...state.previousGuesses, guess],

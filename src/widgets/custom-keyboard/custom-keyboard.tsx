@@ -6,6 +6,8 @@ import { Dimensions, FlatList, ListRenderItem } from "react-native";
 const Container = styled.View`
   flex: 1;
   flex-direction: column;
+  position: absolute;
+  bottom: ${({ theme }) => theme.spacing(3)}px;
 `;
 
 type TCustomKeyboardProps = {

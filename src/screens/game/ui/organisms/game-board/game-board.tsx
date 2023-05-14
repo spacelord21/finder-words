@@ -14,7 +14,7 @@ const Container = styled.View`
 `;
 
 const Title = styled(Typography)`
-  margin-top: ${({ theme }) => theme.spacing(6)}px;
+  margin-top: ${({ theme }) => theme.spacing(6.5)}px;
   margin-bottom: ${({ theme }) => theme.spacing(2)}px;
   color: ${({ theme }) => theme.palette.text.secondary};
 `;
@@ -28,8 +28,7 @@ export const GameBoard = () => {
   const mode = useStore($gameMode);
   const { previousGuesses, attempt } = useStore($gameState);
   const [guess, setGuess] = useState("");
-  const cellSize = Dimensions.get("screen").width / gameInfo[mode].letters - 32;
-
+  const cellSize = Dimensions.get("screen").width / gameInfo[mode].letters - 12;
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
     return (
       <RowCells

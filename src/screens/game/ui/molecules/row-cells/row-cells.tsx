@@ -42,6 +42,7 @@ export const RowCells = ({
           justifyContent: "center",
           alignItems: "center",
         }}
+        style={{ width: "100%" }}
         horizontal
       />
     </Container>

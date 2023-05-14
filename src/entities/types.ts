@@ -3,7 +3,7 @@ export type TCategory = {
   mode: TGameMode;
 };
 
-export type TGameMode = "3_LETTERS" | "4_LETTERS";
+export type TGameMode = "5_LETTERS" | "4_LETTERS" | "6_LETTERS";
 
 type TGameInfo = {
   attempts: number;
@@ -15,13 +15,17 @@ type TGameInfoByMode = {
 };
 
 export const gameInfoByMode: TGameInfoByMode = {
-  "3_LETTERS": {
-    attempts: 4,
-    letters: 3,
+  "5_LETTERS": {
+    attempts: 6,
+    letters: 5,
   },
   "4_LETTERS": {
     attempts: 5,
     letters: 4,
+  },
+  "6_LETTERS": {
+    attempts: 7,
+    letters: 6,
   },
 };
 
