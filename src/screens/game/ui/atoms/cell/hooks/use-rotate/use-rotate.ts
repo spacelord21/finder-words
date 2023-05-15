@@ -9,7 +9,7 @@ export const useRotate = (isCurrent: boolean, value: string | undefined) => {
       Animated.timing(rotateRef, {
         toValue: 1,
         useNativeDriver: true,
-        duration: 600,
+        duration: 300,
       }).start();
     }
   }, [isCurrent]);

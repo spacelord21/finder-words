@@ -1,6 +1,7 @@
 import { styled } from "@shared/ui";
 import { FlatList, ListRenderItem, VirtualizedList } from "react-native";
 import { MemoCell } from "../../atoms/cell";
+import React from "react";
 
 const Container = styled.Pressable`
   flex-direction: row;
@@ -28,6 +29,7 @@ export const RowCells = ({
         index={index}
         isCurrent={isCurrent}
         isCurrentCell={word.length == index && isCurrent}
+        guess={word}
       />
     );
   };
@@ -48,3 +50,5 @@ export const RowCells = ({
     </Container>
   );
 };
+
+export const MemoRowCells = React.memo(RowCells);

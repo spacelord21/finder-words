@@ -2,7 +2,7 @@ import { $gameMode, $gameState } from "@entities/game";
 import { gameInfoByMode } from "@entities/types";
 import { Typography, styled } from "@shared/ui";
 import { useStore } from "effector-react";
-import { RowCells } from "../../molecules";
+import { MemoRowCells, RowCells } from "../../molecules";
 import { FlatList, ListRenderItem, Dimensions } from "react-native";
 import { useEffect, useState } from "react";
 import { CustomKeyboard } from "@widgets/custom-keyboard";
@@ -31,7 +31,7 @@ export const GameBoard = () => {
   const cellSize = Dimensions.get("screen").width / gameInfo[mode].letters - 12;
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
     return (
-      <RowCells
+      <MemoRowCells
         wordLength={gameInfo[mode!].letters}
         word={
           index == attempt

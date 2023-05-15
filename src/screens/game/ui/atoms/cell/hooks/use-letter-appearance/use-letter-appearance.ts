@@ -9,7 +9,7 @@ export const useLetterAppearance = (value: string | undefined) => {
       Animated.timing(opacityRef, {
         toValue: 1,
         useNativeDriver: true,
-        duration: 100,
+        duration: 50,
       }).start();
     }
   }, [value]);
