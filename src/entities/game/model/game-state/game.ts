@@ -1,13 +1,6 @@
-import { TGameCondition, TGameMode } from "@entities/types";
 import { createEffect, createEvent, createStore } from "effector";
-import { getRandomWord } from "../api";
-import { TResponseWord } from "../api/get-random-word";
-
-export const setGameMode = createEvent<TGameMode>();
-export const $gameMode = createStore<TGameMode>("4_LETTERS").on(
-  setGameMode,
-  (_, mode) => mode
-);
+import { getRandomWord } from "../../api";
+import { TResponseWord } from "../../api/get-random-word";
 
 const initialGameState: TGameState = {
   attempt: 0,
@@ -27,11 +20,6 @@ export type TGameState = {
   wrong: string[];
 };
 
-export const setGameCondition = createEvent<TGameCondition>();
-export const $gameCondition = createStore<TGameCondition>("NOTSTARTED").on(
-  setGameCondition,
-  (_, condition) => condition
-);
 export const $gameState = createStore<TGameState>(initialGameState);
 export const getRandomWordFx = createEffect<number, TResponseWord, Error>(
   async (letters) => {
@@ -46,9 +34,6 @@ $gameState.on(setGameWord, (state, payload) => {
   return { ...initialGameState, word: payload };
 });
 $gameState.on(checkGuess, (state, guess) => {
-  if (state.word === guess) {
-    return initialGameState;
-  }
   let wrong = [];
   let correct = [];
   let wrongPlace = [];
@@ -77,10 +62,6 @@ $gameState.on(checkGuess, (state, guess) => {
       new Set([...state.wrongPlaceLetters, ...wrongPlace])
     ),
   };
-});
-
-setGameMode.watch(() => {
-  setGameCondition("INPROGRESS");
 });
 
 getRandomWordFx.failData.watch((payload) => {

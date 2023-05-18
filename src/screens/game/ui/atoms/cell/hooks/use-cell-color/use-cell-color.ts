@@ -5,8 +5,8 @@ import { useTheme } from "styled-components";
 
 type THookArgs = {
   value?: string;
-  isCurrentRow: boolean;
-  isCurrentCell: boolean;
+  isCurrentRow?: boolean;
+  isCurrentCell?: boolean;
   index: number;
   guess: string;
 };
