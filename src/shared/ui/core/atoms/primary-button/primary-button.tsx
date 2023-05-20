@@ -1,4 +1,4 @@
-import { Typography } from "../../atoms";
+import { Typography } from "../typography";
 import { styled } from "../../../theme";
 import { ReactNode } from "react";
 

@@ -27,7 +27,7 @@ export const Cell = ({
     value: value,
     guess: guess,
   });
-  const { rotate } = useRotate(isCurrent, value);
+  const { rotate } = useRotate(isCurrent, value, index);
   const { opacityRef } = useLetterAppearance(value);
 
   return (
@@ -53,7 +53,8 @@ const shouldComponentUpdate = (prevProp: TCellProps, nextProp: TCellProps) => {
   return (
     prevProp.value === undefined &&
     prevProp.value === nextProp.value &&
-    prevProp.isCurrent === nextProp.isCurrent
+    prevProp.isCurrent === nextProp.isCurrent &&
+    prevProp.isCurrentCell === nextProp.isCurrentCell
   );
 };
 

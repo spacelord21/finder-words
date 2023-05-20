@@ -16,7 +16,7 @@ const RowContainer = styled.View`
 `;
 
 export const ResultGrid = () => {
-  const { previousGuesses, word, attempt } = useStore($gameState);
+  const { previousGuesses, attempt } = useStore($gameState);
 
   const renderItem: ListRenderItem<string> = ({ item }) => {
     return (

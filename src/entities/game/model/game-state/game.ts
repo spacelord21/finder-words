@@ -1,6 +1,13 @@
-import { createEffect, createEvent, createStore } from "effector";
+import {
+  createEffect,
+  createEvent,
+  createStore,
+  forward,
+  guard,
+} from "effector";
 import { getRandomWord } from "../../api";
 import { TResponseWord } from "../../api/get-random-word";
+import { wordsBase } from "./words";
 
 const initialGameState: TGameState = {
   attempt: 0,
@@ -19,7 +26,10 @@ export type TGameState = {
   wrongPlaceLetters: string[];
   wrong: string[];
 };
-
+export const setGuess = createEvent<string>();
+export const enterPress = createEvent();
+export const resetGuess = createEvent();
+export const $guess = createStore<string>("").on(resetGuess, (_, __) => "");
 export const $gameState = createStore<TGameState>(initialGameState);
 export const getRandomWordFx = createEffect<number, TResponseWord, Error>(
   async (letters) => {
@@ -64,6 +74,32 @@ $gameState.on(checkGuess, (state, guess) => {
   };
 });
 
-getRandomWordFx.failData.watch((payload) => {
-  console.log(payload);
+$guess.on(setGuess, (state, content) => {
+  switch (content) {
+    case "<": {
+      return state.slice(0, state.length - 1);
+    }
+    default: {
+      return state.length == $gameState.getState().word.length
+        ? state
+        : state + content;
+    }
+  }
+});
+
+forward({
+  from: checkGuess,
+  to: resetGuess,
+});
+
+guard({
+  clock: enterPress,
+  source: $guess,
+  filter: (guess, _) => {
+    return (
+      guess.length == $gameState.getState().word.length &&
+      wordsBase.includes(guess)
+    );
+  },
+  target: checkGuess,
 });

@@ -2,6 +2,7 @@ import {
   $gameCondition,
   $gameMode,
   $gameState,
+  $guess,
   getRandomWordFx,
   setShownGameResults,
 } from "@entities/game";
@@ -12,6 +13,7 @@ import { MemoRowCells, RowCells } from "../../molecules";
 import { FlatList, ListRenderItem, Dimensions } from "react-native";
 import { useEffect, useState } from "react";
 import { CustomKeyboard } from "@widgets/custom-keyboard";
+import React from "react";
 
 const Container = styled.View`
   flex: 1;
@@ -35,17 +37,18 @@ const ButtonContainer = styled.View`
   align-items: center;
   justify-content: space-around;
   margin-bottom: ${({ theme }) => theme.spacing(5)}px;
+  z-index: 100;
 `;
 
 export const GameBoard = () => {
   const gameInfo = gameInfoByMode;
   const mode = useStore($gameMode);
   const { previousGuesses, attempt, word } = useStore($gameState);
-  const [guess, setGuess] = useState("");
+  const guess = useStore($guess);
   const cellSize = Dimensions.get("screen").width / gameInfo[mode].letters - 12;
   const condition = useStore($gameCondition);
   console.log(word);
-  
+
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
     return (
       <MemoRowCells
@@ -93,7 +96,7 @@ export const GameBoard = () => {
           </PrimaryButton>
         </ButtonContainer>
       ) : (
-        <CustomKeyboard setValue={setGuess} />
+        <CustomKeyboard setValue={() => {}} />
       )}
     </Container>
   );

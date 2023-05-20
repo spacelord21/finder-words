@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useRef } from "react";
 import { Animated } from "react-native";
 
-export const useRotate = (isCurrent: boolean, value: string | undefined) => {
+export const useRotate = (
+  isCurrent: boolean,
+  value: string | undefined,
+  index: number
+) => {
   const rotateRef = useRef(new Animated.Value(0)).current;
 
   const rotateAnimation = useCallback(() => {
@@ -15,7 +19,9 @@ export const useRotate = (isCurrent: boolean, value: string | undefined) => {
   }, [isCurrent]);
 
   useEffect(() => {
-    rotateAnimation();
+    setTimeout(() => {
+      rotateAnimation();
+    }, index * 300);
     return () => rotateRef.resetAnimation();
   }, [isCurrent]);
 
