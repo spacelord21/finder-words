@@ -39,3 +39,7 @@ export type TWordVerificationResponse = {
   head: {};
   def: TWordResponse[];
 };
+
+export type TDictonary = {
+  [key in TGameMode]: string[];
+};

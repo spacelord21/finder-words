@@ -1,6 +1,7 @@
 import { $gameState } from "@entities/game";
 import { useStore } from "effector-react";
 import { useMemo } from "react";
+import { Animated } from "react-native";
 import { useTheme } from "styled-components";
 
 type THookArgs = {
@@ -9,6 +10,7 @@ type THookArgs = {
   isCurrentCell?: boolean;
   index: number;
   guess: string;
+  rotate?: Animated.AnimatedInterpolation<string | number>;
 };
 
 export const useCellColor = ({
@@ -17,6 +19,7 @@ export const useCellColor = ({
   isCurrentRow,
   value,
   guess,
+  rotate,
 }: THookArgs) => {
   const { word } = useStore($gameState);
   const theme = useTheme();

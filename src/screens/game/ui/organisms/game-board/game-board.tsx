@@ -3,7 +3,7 @@ import {
   $gameMode,
   $gameState,
   $guess,
-  getRandomWordFx,
+  setGameMode,
   setShownGameResults,
 } from "@entities/game";
 import { gameInfoByMode } from "@entities/types";
@@ -89,7 +89,7 @@ export const GameBoard = () => {
           </PrimaryButton>
           <PrimaryButton
             onPress={() => {
-              getRandomWordFx(gameInfo[mode].letters);
+              setGameMode(mode);
             }}
           >
             Следующее слово

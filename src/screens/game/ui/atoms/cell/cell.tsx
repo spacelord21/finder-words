@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Value } from "./styles";
 import { Animated } from "react-native";
 import { useCellColor, useLetterAppearance, useRotate } from "./hooks";
+import { useTheme } from "styled-components";
 
 export type TCellProps = {
   size: number;
@@ -20,6 +21,10 @@ export const Cell = ({
   isCurrentCell,
   guess,
 }: TCellProps) => {
+  const theme = useTheme();
+  const defaultColor = theme.palette.background.tertiary;
+  const { rotate, readyToChangeColor } = useRotate(isCurrent, value, index);
+  const { opacityRef } = useLetterAppearance(value);
   const { color } = useCellColor({
     index: index,
     isCurrentCell: isCurrentCell,
@@ -27,8 +32,6 @@ export const Cell = ({
     value: value,
     guess: guess,
   });
-  const { rotate } = useRotate(isCurrent, value, index);
-  const { opacityRef } = useLetterAppearance(value);
 
   return (
     <Animated.View
@@ -39,7 +42,7 @@ export const Cell = ({
     >
       <Container
         size={size}
-        color={color}
+        color={readyToChangeColor ? color : defaultColor}
         isCurrentCell={isCurrentCell}
         value={value}
       >

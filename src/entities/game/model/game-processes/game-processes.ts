@@ -1,6 +1,5 @@
-import { TGameCondition, TGameMode } from "@entities/types";
+import { TGameCondition, TGameMode } from "../../../types";
 import { createEvent, createStore, sample } from "effector";
-import { $gameState, checkGuess, getRandomWordFx } from "../game-state";
 
 export const setGameCondition = createEvent<TGameCondition>();
 export const $gameCondition = createStore<TGameCondition>("LOSE").on(
@@ -18,19 +17,6 @@ setGameMode.watch(() => {
   setGameCondition("INPROGRESS");
 });
 
-sample({
-  clock: checkGuess,
-  source: $gameState,
-  fn: (gameState, guess): TGameCondition => {
-    if (guess == gameState.word) return "WIN";
-    if (gameState.attempt > gameState.word.length) {
-      return "LOSE";
-    }
-    return "INPROGRESS";
-  },
-  target: setGameCondition,
-});
-
 export const setShownGameResults = createEvent<boolean>();
 export const $gameResultsShown = createStore<boolean>(true).on(
   setShownGameResults,
@@ -44,20 +30,4 @@ sample({
     return condition == "LOSE" || condition == "WIN" ? true : false;
   },
   target: setShownGameResults,
-});
-
-sample({
-  clock: getRandomWordFx.pending,
-  fn: (): boolean => {
-    return false;
-  },
-  target: setShownGameResults,
-});
-
-sample({
-  clock: getRandomWordFx.pending,
-  fn: (): TGameCondition => {
-    return "NOTSTARTED";
-  },
-  target: setGameCondition,
 });

@@ -4,10 +4,11 @@ import {
   createStore,
   forward,
   guard,
+  sample,
 } from "effector";
-import { getRandomWord } from "../../api";
-import { TResponseWord } from "../../api/get-random-word";
-import { wordsBase } from "./words";
+import { $gameMode, setGameCondition, setGameMode } from "../game-processes";
+import { TDictonary, TGameCondition } from "../../../types";
+import { getDictionary, getTargets } from "../../api";
 
 const initialGameState: TGameState = {
   attempt: 0,
@@ -31,11 +32,25 @@ export const enterPress = createEvent();
 export const resetGuess = createEvent();
 export const $guess = createStore<string>("").on(resetGuess, (_, __) => "");
 export const $gameState = createStore<TGameState>(initialGameState);
-export const getRandomWordFx = createEffect<number, TResponseWord, Error>(
-  async (letters) => {
-    return await getRandomWord(letters);
+
+export const getDictionariesFx = createEffect<void, TDictonary, Error>(
+  async () => {
+    return await getDictionary();
   }
 );
+export const getTargetsFx = createEffect<void, TDictonary, Error>(async () => {
+  return await getTargets();
+});
+const $dictionary = createStore<TDictonary>({
+  "4_LETTERS": [],
+  "5_LETTERS": [],
+  "6_LETTERS": [],
+}).on(getDictionariesFx.doneData, (state, payload) => payload);
+export const $targets = createStore<TDictonary>({
+  "4_LETTERS": [],
+  "5_LETTERS": [],
+  "6_LETTERS": [],
+}).on(getTargetsFx.doneData, (state, payload) => payload);
 
 export const checkGuess = createEvent<string>();
 export const setGameWord = createEvent<string>();
@@ -98,8 +113,34 @@ guard({
   filter: (guess, _) => {
     return (
       guess.length == $gameState.getState().word.length &&
-      wordsBase.includes(guess)
+      $dictionary.getState()[$gameMode.getState()].includes(guess)
     );
   },
   target: checkGuess,
+});
+
+sample({
+  clock: setGameMode,
+  fn: (mode): string => {
+    const array = $targets.getState()[mode];
+    return array[getRandomInt(array.length)];
+  },
+  target: setGameWord,
+});
+
+const getRandomInt = (max: number) => {
+  return Math.floor(Math.random() * max);
+};
+
+sample({
+  clock: checkGuess,
+  source: $gameState,
+  fn: (gameState, guess): TGameCondition => {
+    if (guess == gameState.word) return "WIN";
+    if (gameState.attempt > gameState.word.length) {
+      return "LOSE";
+    }
+    return "INPROGRESS";
+  },
+  target: setGameCondition,
 });

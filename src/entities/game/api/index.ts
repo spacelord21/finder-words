@@ -1,1 +1,1 @@
-export { getRandomWord } from "./get-random-word";
+export * from "./get-dictionaries";

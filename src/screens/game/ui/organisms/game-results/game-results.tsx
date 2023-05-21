@@ -7,6 +7,7 @@ import {
   $gameMode,
   $gameState,
   getRandomWordFx,
+  setGameMode,
   setShownGameResults,
 } from "@entities/game";
 import { gameInfoByMode } from "@entities/types";
@@ -49,7 +50,7 @@ export const GameResults = React.memo(() => {
         </Text>
         <PrimaryButton
           onPress={() => {
-            getRandomWordFx(gameInfo[mode].letters);
+            setGameMode(mode);
           }}
           textColor={theme.palette.text.primary}
         >

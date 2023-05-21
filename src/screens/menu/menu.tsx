@@ -1,5 +1,7 @@
 import { styled } from "@shared/ui";
 import { Categories, Title } from "./ui";
+import { useStore } from "effector-react";
+import { $targets } from "@entities/game";
 
 const Container = styled.View`
   flex: 1;

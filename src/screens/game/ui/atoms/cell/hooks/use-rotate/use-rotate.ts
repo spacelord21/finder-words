@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Animated } from "react-native";
 
 export const useRotate = (
@@ -7,6 +7,7 @@ export const useRotate = (
   index: number
 ) => {
   const rotateRef = useRef(new Animated.Value(0)).current;
+  const [readyToChangeColor, setReady] = useState(false);
 
   const rotateAnimation = useCallback(() => {
     if (!isCurrent && value) {
@@ -15,6 +16,7 @@ export const useRotate = (
         useNativeDriver: true,
         duration: 300,
       }).start();
+      setReady(true);
     }
   }, [isCurrent]);
 
@@ -30,5 +32,5 @@ export const useRotate = (
     outputRange: ["0deg", "360deg"],
   });
 
-  return { rotate };
+  return { rotate, readyToChangeColor };
 };

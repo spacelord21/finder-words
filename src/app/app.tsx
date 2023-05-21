@@ -5,6 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { MainStackNavigation } from "./navigation";
+import { getDictionariesFx, getTargetsFx } from "@entities/game";
 
 const customFonts = {
   ROBOTO_LIGHT: require("../../assets/fonts/Roboto-Light.ttf"),
@@ -29,6 +30,8 @@ export const App = () => {
 
   useEffect(() => {
     loadFonts();
+    getDictionariesFx();
+    getTargetsFx();
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
