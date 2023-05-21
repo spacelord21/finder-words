@@ -47,7 +47,6 @@ export const GameBoard = () => {
   const guess = useStore($guess);
   const cellSize = Dimensions.get("screen").width / gameInfo[mode].letters - 12;
   const condition = useStore($gameCondition);
-  console.log(word);
 
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
     return (
