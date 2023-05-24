@@ -11,7 +11,10 @@ const Wrapper = styled.TouchableOpacity`
 `;
 const ButtonText = styled(Typography)<{ textColor?: string }>`
   text-align: center;
-  color: ${({ textColor, theme }) => textColor ?? theme.palette.text.primary};
+  color: ${({ textColor, theme }) =>
+    theme.name === "light"
+      ? theme.palette.background.primary
+      : textColor ?? theme.palette.text.primary};
 `;
 
 type Props = {

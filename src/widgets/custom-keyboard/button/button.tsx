@@ -13,16 +13,15 @@ export type TKeyboardButton = {
 type TButtonProps = {
   content: string;
   buttonSize: number;
-  setValue: React.Dispatch<SetStateAction<string>>;
 };
 
-export const Button = ({ content, buttonSize, setValue }: TButtonProps) => {
+export const Button = ({ content, buttonSize }: TButtonProps) => {
   const { letterBackgroundColor, letterColor, notLettersBackgroundColor } =
     useButtonsColor(content);
-  const { onPressHandler } = useButtonsPressHandler(setValue);
+  const { onPressHandler } = useButtonsPressHandler();
   return (
     <KeyboardButton
-      width={content === ">" || content === "<" ? buttonSize + 10 : buttonSize}
+      width={content === "<" ? buttonSize + 25 : buttonSize}
       height={buttonSize}
       backgroundColor={
         notLettersBackgroundColor

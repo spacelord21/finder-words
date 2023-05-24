@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { MainStackNavigation } from "./navigation";
 import { getDictionariesFx, getTargetsFx } from "@entities/game";
+import { useStorageTheme } from "@entities/theme";
 
 const customFonts = {
   ROBOTO_LIGHT: require("../../assets/fonts/Roboto-Light.ttf"),
@@ -18,6 +19,7 @@ SplashScreen.preventAutoHideAsync();
 
 export const App = () => {
   const [isFontsLoaded, setIsFontsLoaded] = useState(false);
+  const { isThemeLoaded, loadTheme } = useStorageTheme();
 
   const loadFonts = async () => {
     try {
@@ -30,17 +32,18 @@ export const App = () => {
 
   useEffect(() => {
     loadFonts();
+    loadTheme();
     getDictionariesFx();
     getTargetsFx();
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
-    if (isFontsLoaded) {
+    if (isFontsLoaded && isThemeLoaded) {
       await SplashScreen.hideAsync();
     }
-  }, [isFontsLoaded]);
+  }, [isFontsLoaded, isThemeLoaded]);
 
-  if (!isFontsLoaded) {
+  if (!isFontsLoaded && !isThemeLoaded) {
     return <Text>Loading...</Text>;
   }
 

@@ -7,7 +7,10 @@ import { ResultCell } from "../../atoms";
 const Container = styled.View<{ height: number }>`
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.palette.background.secondary};
+  background-color: ${({ theme }) =>
+    theme.name == "light"
+      ? theme.palette.background.secondary
+      : theme.palette.background.primary};
   height: ${({ height }) => height}px;
 `;
 

@@ -6,7 +6,7 @@ const Cell = styled.View<{ color: string }>`
   height: 35px;
   width: 35px;
   margin: ${({ theme }) => theme.spacing(0.5)}px;
-  border: 1px solid ${({ theme }) => theme.palette.keyboard.dark};
+  border: 1px solid ${({ theme }) => theme.palette.gameboard.dark};
 `;
 
 type TResultCellProps = {

@@ -1,12 +1,14 @@
 import { ReactNode } from "react";
 import { ThemeProvider } from "styled-components";
 
-import { darkTheme } from "./theme";
+import { useStore } from "effector-react";
+import { $theme } from "../../../entities/theme";
 
 type Props = {
   children: ReactNode;
 };
 
 export const AppThemeProvider = ({ children }: Props) => {
-  return <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>;
+  const theme = useStore($theme);
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };

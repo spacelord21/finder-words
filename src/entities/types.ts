@@ -43,3 +43,12 @@ export type TWordVerificationResponse = {
 export type TDictonary = {
   [key in TGameMode]: string[];
 };
+
+export type TGameState = {
+  word: string;
+  attempt: number;
+  previousGuesses: string[];
+  correctLetters: string[];
+  wrongPlaceLetters: string[];
+  wrong: string[];
+};

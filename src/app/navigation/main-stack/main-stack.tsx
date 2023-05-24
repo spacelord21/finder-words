@@ -3,6 +3,7 @@ import { TMainStackParamList } from "../types";
 import { Menu } from "@screens/menu";
 import { Game } from "@screens/game";
 import { Settings } from "@screens/settings";
+import { useTheme } from "styled-components";
 
 const Stack = createNativeStackNavigator<TMainStackParamList>();
 const defaultOptions = {
@@ -10,6 +11,7 @@ const defaultOptions = {
 };
 
 export const MainStackNavigation = () => {
+  const theme = useTheme();
   return (
     <Stack.Navigator initialRouteName="main">
       <Stack.Screen
@@ -25,7 +27,9 @@ export const MainStackNavigation = () => {
       <Stack.Screen
         name="settings"
         component={Settings}
-        options={{ ...defaultOptions }}
+        options={{
+          ...defaultOptions,
+        }}
       />
     </Stack.Navigator>
   );

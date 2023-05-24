@@ -1,5 +1,5 @@
 import { styled } from "@shared/ui";
-import { FlatList, ListRenderItem, VirtualizedList } from "react-native";
+import { FlatList, ListRenderItem } from "react-native";
 import { MemoCell } from "../../atoms/cell";
 import React from "react";
 
@@ -10,13 +10,15 @@ const Container = styled.Pressable`
 type TRowCellsProps = {
   wordLength: number;
   word: string;
-  cellSize: number;
+  cellHeight: number;
+  cellWidth: number;
   isCurrent: boolean;
 };
 export const RowCells = ({
   wordLength,
   word,
-  cellSize,
+  cellHeight,
+  cellWidth,
   isCurrent,
 }: TRowCellsProps) => {
   const mockArray = new Array(wordLength).fill(0);
@@ -24,7 +26,8 @@ export const RowCells = ({
     return (
       <MemoCell
         key={index}
-        size={cellSize}
+        cellWidth={cellWidth}
+        cellHeight={cellHeight}
         value={word[index]}
         index={index}
         isCurrent={isCurrent}

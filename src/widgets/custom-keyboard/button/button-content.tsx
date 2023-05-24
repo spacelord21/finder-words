@@ -7,16 +7,10 @@ type Props = {
 };
 
 export const ButtonContent = ({ content, letterColor }: Props) => {
-  return content === ">" || content === "<" ? (
-    content === "<" ? (
-      <IconContainer>
-        <Backspace />
-      </IconContainer>
-    ) : (
-      <IconContainer>
-        <Enter size={24} />
-      </IconContainer>
-    )
+  return content === "<" ? (
+    <IconContainer>
+      <Backspace />
+    </IconContainer>
   ) : (
     <Text color={letterColor}>{content}</Text>
   );

@@ -1,5 +1,6 @@
 import { Typography, styled } from "@shared/ui";
 import { TKeyboardButton } from "./button";
+import { StyleSheet } from "react-native";
 
 export const KeyboardButton = styled.TouchableOpacity.attrs(({}) => ({
   delayPressOut: 70,
@@ -19,6 +20,7 @@ export const KeyboardButton = styled.TouchableOpacity.attrs(({}) => ({
 export const Text = styled(Typography)<Pick<TKeyboardButton, "color">>`
   text-transform: uppercase;
   color: ${({ color }) => color};
+  font-weight: 600;
 `;
 
 export const IconContainer = styled.View`

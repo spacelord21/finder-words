@@ -1,7 +1,14 @@
-import { darkTheme } from "./theme";
+import { primaryDarkTheme } from "./theme";
+import { firstVariant } from "./board-accent-themes";
 
 export { styled } from "./styled";
-export { darkTheme } from "./theme";
+export { primaryDarkTheme, primaryLightTheme } from "./theme";
 export { AppThemeProvider } from "./provider";
+export {
+  firstVariant,
+  secondVariant,
+  thirdVariant,
+} from "./board-accent-themes";
 
-export type Theme = typeof darkTheme;
+export type CellTheme = typeof firstVariant;
+export type Theme = typeof primaryDarkTheme;

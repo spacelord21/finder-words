@@ -1,7 +1,5 @@
 import { Typography, styled } from "@shared/ui";
 import { Categories, Title } from "./ui";
-import { useStore } from "effector-react";
-import { $targets } from "@entities/game";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { TMainStackParamList } from "@app/navigation/types";
 import { useNavigation } from "@react-navigation/native";
