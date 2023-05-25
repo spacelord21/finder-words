@@ -39,7 +39,7 @@ const ButtonContainer = styled.View`
 export const GameBoard = () => {
   const gameInfo = gameInfoByMode;
   const mode = useStore($gameMode);
-  const { previousGuesses, attempt } = useStore($gameState);
+  const { previousGuesses, attempt, word } = useStore($gameState);
   const guess = useStore($guess);
   const cellWidth =
     Dimensions.get("screen").width / gameInfo[mode].letters - 12;
@@ -61,6 +61,7 @@ export const GameBoard = () => {
         isCurrent={index == attempt}
         cellWidth={cellWidth}
         cellHeight={cellHeight}
+        rightWord={word}
       />
     );
   };

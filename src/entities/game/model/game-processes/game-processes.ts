@@ -1,5 +1,11 @@
-import { TGameCondition, TGameMode } from "../../../types";
-import { createEvent, createStore, sample } from "effector";
+import { TGameCondition, TGameMode, gameInfoByMode } from "../../../types";
+import {
+  createEffect,
+  createEvent,
+  createStore,
+  forward,
+  sample,
+} from "effector";
 
 export const setGameCondition = createEvent<TGameCondition>();
 export const $gameCondition = createStore<TGameCondition>("LOSE").on(
@@ -23,11 +29,24 @@ export const $gameResultsShown = createStore<boolean>(true).on(
   (_, payload) => payload
 );
 
+const RESULTS_SHOW_TIMEOUT =
+  gameInfoByMode[$gameMode.getState()].letters * 300 + 200;
+
+const timeoutFx = createEffect<void, boolean>(async () => {
+  return new Promise((res) => {
+    const condition = $gameCondition.getState();
+    setTimeout(() => {
+      condition == "LOSE" || condition == "WIN" ? res(true) : res(false);
+    }, RESULTS_SHOW_TIMEOUT);
+  });
+});
+
+forward({
+  from: setGameCondition,
+  to: timeoutFx,
+});
+
 sample({
-  clock: setGameCondition,
-  source: $gameCondition,
-  fn: (_, condition) => {
-    return condition == "LOSE" || condition == "WIN" ? true : false;
-  },
+  clock: timeoutFx.doneData,
   target: setShownGameResults,
 });

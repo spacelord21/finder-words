@@ -10,6 +10,7 @@ const Container = styled.View`
   height: ${({ theme }) => theme.spacing(10)}px;
   align-items: center;
   margin-top: ${({ theme }) => theme.spacing(2)}px;
+  background-color: ${({ theme }) => theme.palette.background.primary};
 `;
 
 const Title = styled(Typography)`

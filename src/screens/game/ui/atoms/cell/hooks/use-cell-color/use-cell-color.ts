@@ -8,6 +8,7 @@ type THookArgs = {
   isCurrentRow?: boolean;
   index: number;
   guess: string;
+  rightWord: string;
 };
 
 export const useCellColor = ({
@@ -15,8 +16,9 @@ export const useCellColor = ({
   isCurrentRow,
   value,
   guess,
+  rightWord: word,
 }: THookArgs) => {
-  const { word } = useStore($gameState);
+  // const { word } = useStore($gameState);
   const theme = useTheme();
   const rightPlace = theme.palette.gameboard.rightPlace;
   const wrongPlace = theme.palette.gameboard.wrongPlace;

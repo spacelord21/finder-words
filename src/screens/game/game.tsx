@@ -4,7 +4,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { TMainStackParamList } from "@app/navigation/types";
 import { useNavigation } from "@react-navigation/native";
 import { useStore } from "effector-react";
-import { $gameCondition, $gameResultsShown, resetState } from "@entities/game";
+import { $gameCondition, $gameResultsShown, saveState } from "@entities/game";
 import ConfettiCannon from "react-native-confetti-cannon";
 import { useTheme } from "styled-components";
 
@@ -45,15 +45,16 @@ export const Game = () => {
   const condition = useStore($gameCondition);
   const theme = useTheme();
 
+  const backPressHandler = () => {
+    navigation.navigate("main");
+    if (condition == "INPROGRESS") {
+      saveState();
+    }
+  };
+
   return (
     <Container>
-      <IconBackWrapper
-        onPress={() => {
-          resetState();
-          navigation.navigate("main");
-        }}
-        activeOpacity={0.7}
-      >
+      <IconBackWrapper onPress={backPressHandler} activeOpacity={0.7}>
         <Back color={theme.palette.text.blue} />
         <Text variant="subtitle">Выбрать режим</Text>
       </IconBackWrapper>

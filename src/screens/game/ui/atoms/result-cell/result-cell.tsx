@@ -1,5 +1,7 @@
 import { styled } from "@shared/ui";
 import { useCellColor } from "../cell/hooks";
+import { useStore } from "effector-react";
+import { $gameState } from "@entities/game";
 
 const Cell = styled.View<{ color: string }>`
   background-color: ${({ color }) => color};
@@ -16,6 +18,12 @@ type TResultCellProps = {
 };
 
 export const ResultCell = ({ guess, index, value }: TResultCellProps) => {
-  const { color } = useCellColor({ guess: guess, index: index, value: value });
+  const { word } = useStore($gameState);
+  const { color } = useCellColor({
+    guess: guess,
+    index: index,
+    value: value,
+    rightWord: word,
+  });
   return <Cell color={color} />;
 };

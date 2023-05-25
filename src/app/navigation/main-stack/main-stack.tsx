@@ -4,6 +4,7 @@ import { Menu } from "@screens/menu";
 import { Game } from "@screens/game";
 import { Settings } from "@screens/settings";
 import { useTheme } from "styled-components";
+import { Rules } from "@screens/rules";
 
 const Stack = createNativeStackNavigator<TMainStackParamList>();
 const defaultOptions = {
@@ -30,6 +31,11 @@ export const MainStackNavigation = () => {
         options={{
           ...defaultOptions,
         }}
+      />
+      <Stack.Screen
+        name="rules"
+        component={Rules}
+        options={{ ...defaultOptions }}
       />
     </Stack.Navigator>
   );

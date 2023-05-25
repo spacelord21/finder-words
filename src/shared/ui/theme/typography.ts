@@ -24,4 +24,9 @@ export const typography = {
     fontFamily: "ROBOTO_LIGHT",
     letterSpacing: "0.4px",
   },
+  body20: {
+    size: "20px",
+    fontFamily: "ROBOTO_REGULAR",
+    letterSpacing: "0px",
+  },
 };

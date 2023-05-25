@@ -12,6 +12,7 @@ export type TCellProps = {
   isCurrent: boolean;
   isCurrentCell: boolean;
   guess: string;
+  rightWord: string;
 };
 
 export const Cell = ({
@@ -22,6 +23,7 @@ export const Cell = ({
   isCurrent,
   isCurrentCell,
   guess,
+  rightWord,
 }: TCellProps) => {
   const theme = useTheme();
   const defaultColor = theme.palette.background.tertiary;
@@ -36,6 +38,7 @@ export const Cell = ({
     isCurrentRow: isCurrent,
     value: value,
     guess: guess,
+    rightWord: rightWord,
   });
 
   return (

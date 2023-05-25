@@ -13,6 +13,7 @@ type TRowCellsProps = {
   cellHeight: number;
   cellWidth: number;
   isCurrent: boolean;
+  rightWord: string;
 };
 export const RowCells = ({
   wordLength,
@@ -20,6 +21,7 @@ export const RowCells = ({
   cellHeight,
   cellWidth,
   isCurrent,
+  rightWord,
 }: TRowCellsProps) => {
   const mockArray = new Array(wordLength).fill(0);
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
@@ -33,6 +35,7 @@ export const RowCells = ({
         isCurrent={isCurrent}
         isCurrentCell={word.length == index && isCurrent}
         guess={word}
+        rightWord={rightWord}
       />
     );
   };

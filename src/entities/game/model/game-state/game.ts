@@ -6,14 +6,18 @@ import {
   guard,
   sample,
 } from "effector";
-import { $gameMode, setGameCondition, setGameMode } from "../game-processes";
+import {
+  $gameCondition,
+  $gameMode,
+  setGameCondition,
+  setGameMode,
+} from "../game-processes";
 import {
   TGameCondition,
   TGameMode,
   TGameState,
   gameInfoByMode,
 } from "../../../types";
-import { persist } from "effector-storage/rn/async";
 import { $guess, enterPress, resetGuess } from "../keyboard/model";
 import { $dictionary, $targets } from "../dictionaries";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -32,9 +36,11 @@ export const $gameState = createStore<TGameState>(initialGameState);
 export const checkGuess = createEvent<string>();
 export const setGameState = createEvent<TGameState>();
 
-const checkStorageFx = createEffect<TGameMode, TGameState>(async (mode) => {
-  return await fetchGameStateFromStorage(mode);
-});
+export const checkStorageFx = createEffect<TGameMode, TGameState>(
+  async (mode) => {
+    return await fetchGameStateFromStorage(mode);
+  }
+);
 
 $gameState.on(setGameState, (state, payload) => {
   return payload;
@@ -82,14 +88,19 @@ guard({
   target: checkGuess,
 });
 
-persist({
-  store: $gameState,
-  key: $gameMode.getState(),
-});
+export const saveState = createEvent();
 
 const fetchGameStateFromStorage = async (mode: TGameMode) => {
   const value = await AsyncStorage.getItem(mode);
-  if (value) return JSON.parse(value);
+  // const condition = $gameCondition.getState();
+  if (value) {
+    const result: TGameState = JSON.parse(value);
+    console.log(result);
+
+    if (gameInfoByMode[mode].letters == result.word.length) {
+      return result;
+    }
+  }
   const array = $targets.getState()[mode];
   return { ...initialGameState, word: array[getRandomInt(array.length)] };
 };
@@ -99,5 +110,4 @@ forward({
   to: setGameState,
 });
 
-export const resetState = createEvent();
-$gameState.on(resetState, (state, payload) => initialGameState);
+const saveGameStateToStorage = async () => {};
