@@ -11,7 +11,10 @@ export const Container = styled.TouchableOpacity`
 
 export const Window = styled.View`
   z-index: 100;
-  background-color: ${({ theme }) => theme.palette.background.secondary};
+  background-color: ${({ theme }) =>
+    theme.name == "light"
+      ? theme.palette.background.secondary
+      : theme.palette.background.primary};
   border-radius: 10px;
   justify-content: space-around;
   align-items: center;

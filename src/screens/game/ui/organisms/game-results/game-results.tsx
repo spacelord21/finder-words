@@ -6,7 +6,6 @@ import {
   $gameCondition,
   $gameMode,
   $gameState,
-  getRandomWordFx,
   setGameMode,
   setShownGameResults,
 } from "@entities/game";
@@ -25,12 +24,7 @@ export const GameResults = React.memo(() => {
   const gameInfo = gameInfoByMode;
   const result = condition == "WIN" ? "Победа!" : "Поражение!";
   return (
-    <Container
-      activeOpacity={1}
-      onPress={() => {
-        setShownGameResults(false);
-      }}
-    >
+    <Container activeOpacity={1}>
       <Window style={{ width: windowSize, height: windowSize + 64 }}>
         <Text variant="title" style={{ marginVertical: theme.spacing(2) }}>
           {result}
@@ -52,7 +46,9 @@ export const GameResults = React.memo(() => {
           onPress={() => {
             setGameMode(mode);
           }}
-          textColor={theme.palette.text.primary}
+          textColor={
+            theme.name == "light" ? "#ffffff" : theme.palette.text.primary
+          }
         >
           Следующее слово
         </PrimaryButton>

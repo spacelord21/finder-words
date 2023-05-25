@@ -5,48 +5,70 @@ import { useCellColor, useLetterAppearance, useRotate } from "./hooks";
 import { useTheme } from "styled-components";
 
 export type TCellProps = {
-  size: number;
+  cellHeight: number;
+  cellWidth: number;
   value?: string;
   index: number;
   isCurrent: boolean;
   isCurrentCell: boolean;
   guess: string;
+  rightWord: string;
 };
 
 export const Cell = ({
-  size,
+  cellHeight,
+  cellWidth,
   value,
   index,
   isCurrent,
   isCurrentCell,
   guess,
+  rightWord,
 }: TCellProps) => {
   const theme = useTheme();
   const defaultColor = theme.palette.background.tertiary;
-  const { rotate, readyToChangeColor } = useRotate(isCurrent, value, index);
-  const { opacityRef } = useLetterAppearance(value);
-  const { color } = useCellColor({
+  const { scaleAnimation, readyToChangeColor } = useRotate(
+    isCurrent,
+    value,
+    index
+  );
+  const { appearance } = useLetterAppearance(value);
+  const { color, letterColor } = useCellColor({
     index: index,
-    isCurrentCell: isCurrentCell,
     isCurrentRow: isCurrent,
     value: value,
     guess: guess,
+    rightWord: rightWord,
   });
 
   return (
     <Animated.View
       style={{
-        opacity: value === undefined ? 1 : opacityRef,
-        transform: [{ rotateX: rotate }],
+        transform: [
+          { scaleY: readyToChangeColor ? scaleAnimation : 1 },
+          { scale: appearance },
+        ],
       }}
     >
       <Container
-        size={size}
+        cellHeight={cellHeight}
+        cellWidth={cellWidth}
         color={readyToChangeColor ? color : defaultColor}
         isCurrentCell={isCurrentCell}
         value={value}
       >
-        <Value variant="largeTitle">{value}</Value>
+        <Value
+          variant="largeTitle"
+          color={
+            readyToChangeColor
+              ? letterColor
+              : theme.name == "dark"
+              ? "#FFFFFF"
+              : theme.palette.text.dark
+          }
+        >
+          {value}
+        </Value>
       </Container>
     </Animated.View>
   );

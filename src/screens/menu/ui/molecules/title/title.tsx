@@ -7,7 +7,7 @@ const Container = styled.View`
 `;
 
 const Text = styled(Typography)`
-  color: ${({ theme }) => theme.palette.text.secondary};
+  color: ${({ theme }) => theme.palette.text.blue};
 `;
 
 export const Title = () => {

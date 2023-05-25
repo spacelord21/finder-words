@@ -1,61 +1,30 @@
-const THEME_GRID_STEP = 8;
+import { firstVariant } from "./board-accent-themes";
+import { defaultDarkPalette, defaultLightPalette } from "./palettes";
+import { typography } from "./typography";
 
-export const darkTheme = {
+const THEME_GRID_STEP = 8;
+const spacing = (multiplier: number) => THEME_GRID_STEP * multiplier;
+
+export const primaryDarkTheme = {
   name: "dark",
   palette: {
-    background: {
-      primary: "#0a1929",
-      secondary: "#132f4c",
-      tertiary: "#787c7e",
-    },
-    text: {
-      primary: "#FFFFFF",
-      secondary: "#66b2ff",
-      dark: "#1a1a1b",
-    },
-    accent: {
-      primary: "#66b2ff",
-      success: "#6aaa64",
-      wrongPlace: "#c9b458",
-    },
-    keyboard: {
-      white: "#d3d6da",
-      dark: "#787c7e",
-      enter: "#017f70",
-      yellow: "#c9b458",
-      backspace: "#414443",
-      green: "#6aaa64",
-    },
-    button: {
-      primary: "#66b2ff",
+    ...defaultDarkPalette,
+    gameboard: {
+      ...firstVariant,
     },
   },
-  typography: {
-    largeTitle: {
-      size: "34px",
-      fontFamily: "ROBOTO_REGULAR",
-      letterSpacing: "0px",
-    },
-    title: {
-      size: "24px",
-      fontFamily: "ROBOTO_REGULAR",
-      letterSpacing: "0px",
-    },
-    subtitle: {
-      size: "20px",
-      fontFamily: "ROBOTO_MEDIUM",
-      letterSpacing: "0.15px",
-    },
-    body16: {
-      size: "16px",
-      fontFamily: "ROBOTO_REGULAR",
-      letterSpacing: "0.5px",
-    },
-    caption: {
-      size: "12px",
-      fontFamily: "ROBOTO_LIGHT",
-      letterSpacing: "0.4px",
+  typography: typography,
+  spacing: spacing,
+};
+
+export const primaryLightTheme = {
+  name: "light",
+  palette: {
+    ...defaultLightPalette,
+    gameboard: {
+      ...firstVariant,
     },
   },
-  spacing: (multiplier: number) => THEME_GRID_STEP * multiplier,
+  typography: typography,
+  spacing: spacing,
 };

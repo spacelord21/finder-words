@@ -1,20 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Animated } from "react-native";
 
+const ANIMATION_DURATION = 180;
+
 export const useRotate = (
   isCurrent: boolean,
   value: string | undefined,
   index: number
 ) => {
-  const rotateRef = useRef(new Animated.Value(0)).current;
+  const scaleRef = useRef(new Animated.Value(0)).current;
   const [readyToChangeColor, setReady] = useState(false);
 
-  const rotateAnimation = useCallback(() => {
+  const scaleYAnim = useCallback(() => {
     if (!isCurrent && value) {
-      Animated.timing(rotateRef, {
+      Animated.timing(scaleRef, {
         toValue: 1,
         useNativeDriver: true,
-        duration: 300,
+        duration: ANIMATION_DURATION,
       }).start();
       setReady(true);
     }
@@ -22,15 +24,24 @@ export const useRotate = (
 
   useEffect(() => {
     setTimeout(() => {
-      rotateAnimation();
-    }, index * 300);
-    return () => rotateRef.resetAnimation();
+      scaleYAnim();
+    }, index * ANIMATION_DURATION);
+    return () => {
+      scaleRef.resetAnimation();
+      setReady(false);
+    };
   }, [isCurrent]);
 
-  const rotate = rotateRef.interpolate({
+  useEffect(() => {
+    return () => {
+      setReady(false);
+    };
+  }, [value]);
+
+  const scaleAnimation = scaleRef.interpolate({
     inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
+    outputRange: [0, 1],
   });
 
-  return { rotate, readyToChangeColor };
+  return { scaleAnimation, readyToChangeColor };
 };

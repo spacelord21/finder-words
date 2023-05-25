@@ -7,13 +7,11 @@ import {
   setShownGameResults,
 } from "@entities/game";
 import { gameInfoByMode } from "@entities/types";
-import { PrimaryButton, Typography, styled } from "@shared/ui";
+import { PrimaryButton, styled } from "@shared/ui";
 import { useStore } from "effector-react";
-import { MemoRowCells, RowCells } from "../../molecules";
+import { MemoRowCells } from "../../molecules";
 import { FlatList, ListRenderItem, Dimensions } from "react-native";
-import { useEffect, useState } from "react";
 import { CustomKeyboard } from "@widgets/custom-keyboard";
-import React from "react";
 
 const Container = styled.View`
   flex: 1;
@@ -21,18 +19,16 @@ const Container = styled.View`
   align-items: center;
 `;
 
-const Title = styled(Typography)`
-  margin-top: ${({ theme }) => theme.spacing(6.5)}px;
-  margin-bottom: ${({ theme }) => theme.spacing(2)}px;
-  color: ${({ theme }) => theme.palette.text.secondary};
-`;
-
 const Board = styled(FlatList<string>)`
-  flex: 1;
+  position: absolute;
+  top: ${({ theme }) => theme.spacing(1)}px;
   margin-top: ${({ theme }) => theme.spacing(8)}px;
+  height: 65%;
 `;
 
 const ButtonContainer = styled.View`
+  position: absolute;
+  bottom: ${({ theme }) => theme.spacing(2)}px;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
@@ -45,7 +41,10 @@ export const GameBoard = () => {
   const mode = useStore($gameMode);
   const { previousGuesses, attempt, word } = useStore($gameState);
   const guess = useStore($guess);
-  const cellSize = Dimensions.get("screen").width / gameInfo[mode].letters - 12;
+  const cellWidth =
+    Dimensions.get("screen").width / gameInfo[mode].letters - 12;
+  const cellHeight =
+    (Dimensions.get("screen").height * 0.53) / gameInfo[mode].attempts;
   const condition = useStore($gameCondition);
 
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
@@ -60,7 +59,9 @@ export const GameBoard = () => {
             : previousGuesses[index]
         }
         isCurrent={index == attempt}
-        cellSize={cellSize}
+        cellWidth={cellWidth}
+        cellHeight={cellHeight}
+        rightWord={word}
       />
     );
   };
@@ -95,7 +96,7 @@ export const GameBoard = () => {
           </PrimaryButton>
         </ButtonContainer>
       ) : (
-        <CustomKeyboard setValue={() => {}} />
+        <CustomKeyboard />
       )}
     </Container>
   );

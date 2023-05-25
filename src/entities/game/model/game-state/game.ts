@@ -6,9 +6,22 @@ import {
   guard,
   sample,
 } from "effector";
-import { $gameMode, setGameCondition, setGameMode } from "../game-processes";
-import { TDictonary, TGameCondition } from "../../../types";
-import { getDictionary, getTargets } from "../../api";
+import {
+  $gameCondition,
+  $gameMode,
+  setGameCondition,
+  setGameMode,
+} from "../game-processes";
+import {
+  TGameCondition,
+  TGameMode,
+  TGameState,
+  gameInfoByMode,
+} from "../../../types";
+import { $guess, enterPress, resetGuess } from "../keyboard/model";
+import { $dictionary, $targets } from "../dictionaries";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { checkGuessHandler } from "./check-guess";
 
 const initialGameState: TGameState = {
   attempt: 0,
@@ -19,87 +32,21 @@ const initialGameState: TGameState = {
   wrongPlaceLetters: [],
 };
 
-export type TGameState = {
-  word: string;
-  attempt: number;
-  previousGuesses: string[];
-  correctLetters: string[];
-  wrongPlaceLetters: string[];
-  wrong: string[];
-};
-export const setGuess = createEvent<string>();
-export const enterPress = createEvent();
-export const resetGuess = createEvent();
-export const $guess = createStore<string>("").on(resetGuess, (_, __) => "");
 export const $gameState = createStore<TGameState>(initialGameState);
+export const checkGuess = createEvent<string>();
+export const setGameState = createEvent<TGameState>();
 
-export const getDictionariesFx = createEffect<void, TDictonary, Error>(
-  async () => {
-    return await getDictionary();
+export const checkStorageFx = createEffect<TGameMode, TGameState>(
+  async (mode) => {
+    return await fetchGameStateFromStorage(mode);
   }
 );
-export const getTargetsFx = createEffect<void, TDictonary, Error>(async () => {
-  return await getTargets();
-});
-const $dictionary = createStore<TDictonary>({
-  "4_LETTERS": [],
-  "5_LETTERS": [],
-  "6_LETTERS": [],
-}).on(getDictionariesFx.doneData, (state, payload) => payload);
-export const $targets = createStore<TDictonary>({
-  "4_LETTERS": [],
-  "5_LETTERS": [],
-  "6_LETTERS": [],
-}).on(getTargetsFx.doneData, (state, payload) => payload);
 
-export const checkGuess = createEvent<string>();
-export const setGameWord = createEvent<string>();
-
-$gameState.on(setGameWord, (state, payload) => {
-  return { ...initialGameState, word: payload };
+$gameState.on(setGameState, (state, payload) => {
+  return payload;
 });
 $gameState.on(checkGuess, (state, guess) => {
-  let wrong = [];
-  let correct = [];
-  let wrongPlace = [];
-  const guessInLetters = guess.split("");
-  const wordInLetters = state.word.split("");
-  for (let i = 0; i < wordInLetters.length; i++) {
-    for (let j = 0; j < wordInLetters.length; j++) {
-      if (i == j && wordInLetters[i] == guessInLetters[j]) {
-        correct.push(guessInLetters[j]);
-        break;
-      }
-      if (i != j && wordInLetters[i] == guessInLetters[j]) {
-        wrongPlace.push(guessInLetters[j]);
-        break;
-      }
-      wrong.push(guessInLetters[j]);
-    }
-  }
-  return {
-    attempt: state.attempt + 1,
-    previousGuesses: [...state.previousGuesses, guess],
-    word: state.word,
-    correctLetters: Array.from(new Set([...state.correctLetters, ...correct])),
-    wrong: Array.from(new Set([...state.wrong, ...wrong])),
-    wrongPlaceLetters: Array.from(
-      new Set([...state.wrongPlaceLetters, ...wrongPlace])
-    ),
-  };
-});
-
-$guess.on(setGuess, (state, content) => {
-  switch (content) {
-    case "<": {
-      return state.slice(0, state.length - 1);
-    }
-    default: {
-      return state.length == $gameState.getState().word.length
-        ? state
-        : state + content;
-    }
-  }
+  return checkGuessHandler(state, guess);
 });
 
 forward({
@@ -107,25 +54,9 @@ forward({
   to: resetGuess,
 });
 
-guard({
-  clock: enterPress,
-  source: $guess,
-  filter: (guess, _) => {
-    return (
-      guess.length == $gameState.getState().word.length &&
-      $dictionary.getState()[$gameMode.getState()].includes(guess)
-    );
-  },
-  target: checkGuess,
-});
-
-sample({
-  clock: setGameMode,
-  fn: (mode): string => {
-    const array = $targets.getState()[mode];
-    return array[getRandomInt(array.length)];
-  },
-  target: setGameWord,
+forward({
+  from: setGameMode,
+  to: checkStorageFx,
 });
 
 const getRandomInt = (max: number) => {
@@ -144,3 +75,39 @@ sample({
   },
   target: setGameCondition,
 });
+
+guard({
+  clock: enterPress,
+  source: $guess,
+  filter: (guess, _) => {
+    return (
+      guess.length == $gameState.getState().word.length &&
+      $dictionary.getState()[$gameMode.getState()].includes(guess)
+    );
+  },
+  target: checkGuess,
+});
+
+export const saveState = createEvent();
+
+const fetchGameStateFromStorage = async (mode: TGameMode) => {
+  const value = await AsyncStorage.getItem(mode);
+  // const condition = $gameCondition.getState();
+  if (value) {
+    const result: TGameState = JSON.parse(value);
+    console.log(result);
+
+    if (gameInfoByMode[mode].letters == result.word.length) {
+      return result;
+    }
+  }
+  const array = $targets.getState()[mode];
+  return { ...initialGameState, word: array[getRandomInt(array.length)] };
+};
+
+forward({
+  from: checkStorageFx.doneData,
+  to: setGameState,
+});
+
+const saveGameStateToStorage = async () => {};

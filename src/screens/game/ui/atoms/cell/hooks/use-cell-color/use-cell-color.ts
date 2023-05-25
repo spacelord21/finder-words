@@ -1,32 +1,31 @@
 import { $gameState } from "@entities/game";
 import { useStore } from "effector-react";
 import { useMemo } from "react";
-import { Animated } from "react-native";
 import { useTheme } from "styled-components";
 
 type THookArgs = {
   value?: string;
   isCurrentRow?: boolean;
-  isCurrentCell?: boolean;
   index: number;
   guess: string;
-  rotate?: Animated.AnimatedInterpolation<string | number>;
+  rightWord: string;
 };
 
 export const useCellColor = ({
   index,
-  isCurrentCell,
   isCurrentRow,
   value,
   guess,
-  rotate,
+  rightWord: word,
 }: THookArgs) => {
-  const { word } = useStore($gameState);
+  // const { word } = useStore($gameState);
   const theme = useTheme();
-  const green = theme.palette.accent.success;
-  const yellow = theme.palette.accent.wrongPlace;
-  const wrongColor = theme.palette.keyboard.backspace;
-  const defaultColor = theme.palette.background.tertiary;
+  const rightPlace = theme.palette.gameboard.rightPlace;
+  const wrongPlace = theme.palette.gameboard.wrongPlace;
+  const wrongColor = theme.palette.gameboard.wrong;
+  const defaultColor = theme.palette.gameboard.default;
+  const whiteLetter = "#FFFFFF";
+  const darkLetter = theme.palette.text.dark;
 
   const color = useMemo(() => {
     if (!value) return defaultColor;
@@ -45,14 +44,22 @@ export const useCellColor = ({
           wordArray.includes(value) &&
           quantityLikeValue >= quantityValueInGuess
         )
-          return yellow;
+          return wrongPlace;
       }
-      if (wordArray[index] == value) return green;
+      if (wordArray[index] == value) return rightPlace;
 
       return wrongColor;
     }
     return defaultColor;
   }, [value, isCurrentRow]);
 
-  return { color };
+  const letterColor = useMemo(() => {
+    if (theme.name == "dark") return whiteLetter;
+    if (!isCurrentRow) {
+      return whiteLetter;
+    }
+    return darkLetter;
+  }, [isCurrentRow]);
+
+  return { color, letterColor };
 };

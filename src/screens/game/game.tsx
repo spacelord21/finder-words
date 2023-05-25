@@ -4,8 +4,9 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { TMainStackParamList } from "@app/navigation/types";
 import { useNavigation } from "@react-navigation/native";
 import { useStore } from "effector-react";
-import { $gameCondition, $gameResultsShown } from "@entities/game";
+import { $gameCondition, $gameResultsShown, saveState } from "@entities/game";
 import ConfettiCannon from "react-native-confetti-cannon";
+import { useTheme } from "styled-components";
 
 const Container = styled.View`
   flex: 1;
@@ -25,7 +26,7 @@ const IconBackWrapper = styled.TouchableOpacity`
 `;
 
 const Text = styled(Typography)`
-  color: ${({ theme }) => theme.palette.text.secondary};
+  color: ${({ theme }) => theme.palette.text.blue};
 `;
 
 const Confitti = styled.View`
@@ -42,16 +43,19 @@ export const Game = () => {
   const navigation = useNavigation<Navigation>();
   const isResultsShown = useStore($gameResultsShown);
   const condition = useStore($gameCondition);
+  const theme = useTheme();
+
+  const backPressHandler = () => {
+    navigation.navigate("main");
+    if (condition == "INPROGRESS") {
+      saveState();
+    }
+  };
 
   return (
     <Container>
-      <IconBackWrapper
-        onPress={() => {
-          navigation.navigate("main");
-        }}
-        activeOpacity={0.7}
-      >
-        <Back />
+      <IconBackWrapper onPress={backPressHandler} activeOpacity={0.7}>
+        <Back color={theme.palette.text.blue} />
         <Text variant="subtitle">Выбрать режим</Text>
       </IconBackWrapper>
       {condition == "WIN" ? (
