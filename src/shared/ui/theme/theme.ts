@@ -6,13 +6,25 @@ export const darkTheme = {
     background: {
       primary: "#0a1929",
       secondary: "#132f4c",
+      tertiary: "#787c7e",
     },
     text: {
       primary: "#FFFFFF",
       secondary: "#66b2ff",
+      dark: "#1a1a1b",
     },
     accent: {
       primary: "#66b2ff",
+      success: "#6aaa64",
+      wrongPlace: "#c9b458",
+    },
+    keyboard: {
+      white: "#d3d6da",
+      dark: "#787c7e",
+      enter: "#017f70",
+      yellow: "#c9b458",
+      backspace: "#414443",
+      green: "#6aaa64",
     },
   },
   typography: {
