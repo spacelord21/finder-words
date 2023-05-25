@@ -1,11 +1,19 @@
-import { $gameMode, $gameState } from "@entities/game";
+import {
+  $gameCondition,
+  $gameMode,
+  $gameState,
+  $guess,
+  setGameMode,
+  setShownGameResults,
+} from "@entities/game";
 import { gameInfoByMode } from "@entities/types";
-import { Typography, styled } from "@shared/ui";
+import { PrimaryButton, Typography, styled } from "@shared/ui";
 import { useStore } from "effector-react";
 import { MemoRowCells, RowCells } from "../../molecules";
 import { FlatList, ListRenderItem, Dimensions } from "react-native";
 import { useEffect, useState } from "react";
 import { CustomKeyboard } from "@widgets/custom-keyboard";
+import React from "react";
 
 const Container = styled.View`
   flex: 1;
@@ -20,15 +28,26 @@ const Title = styled(Typography)`
 `;
 
 const Board = styled(FlatList<string>)`
-  flex: 1.6;
+  flex: 1;
+  margin-top: ${({ theme }) => theme.spacing(8)}px;
+`;
+
+const ButtonContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: ${({ theme }) => theme.spacing(5)}px;
+  z-index: 100;
 `;
 
 export const GameBoard = () => {
   const gameInfo = gameInfoByMode;
   const mode = useStore($gameMode);
-  const { previousGuesses, attempt } = useStore($gameState);
-  const [guess, setGuess] = useState("");
+  const { previousGuesses, attempt, word } = useStore($gameState);
+  const guess = useStore($guess);
   const cellSize = Dimensions.get("screen").width / gameInfo[mode].letters - 12;
+  const condition = useStore($gameCondition);
+
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
     return (
       <MemoRowCells
@@ -48,7 +67,7 @@ export const GameBoard = () => {
 
   return (
     <Container>
-      <Title variant="largeTitle">Угадайте слово!</Title>
+      {/* <Title variant="largeTitle">Угадайте слово!</Title> */}
       <Board
         data={new Array(gameInfo[mode].attempts).fill(0)}
         renderItem={renderItem}
@@ -58,7 +77,26 @@ export const GameBoard = () => {
           alignContent: "center",
         }}
       />
-      <CustomKeyboard setValue={setGuess} />
+      {condition === "WIN" || condition === "LOSE" ? (
+        <ButtonContainer>
+          <PrimaryButton
+            onPress={() => {
+              setShownGameResults(true);
+            }}
+          >
+            Результат
+          </PrimaryButton>
+          <PrimaryButton
+            onPress={() => {
+              setGameMode(mode);
+            }}
+          >
+            Следующее слово
+          </PrimaryButton>
+        </ButtonContainer>
+      ) : (
+        <CustomKeyboard setValue={() => {}} />
+      )}
     </Container>
   );
 };

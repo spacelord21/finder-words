@@ -26,6 +26,9 @@ export const darkTheme = {
       backspace: "#414443",
       green: "#6aaa64",
     },
+    button: {
+      primary: "#66b2ff",
+    },
   },
   typography: {
     largeTitle: {
@@ -39,7 +42,7 @@ export const darkTheme = {
       letterSpacing: "0px",
     },
     subtitle: {
-      size: "16px",
+      size: "20px",
       fontFamily: "ROBOTO_MEDIUM",
       letterSpacing: "0.15px",
     },

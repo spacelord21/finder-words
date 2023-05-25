@@ -30,3 +30,16 @@ export const gameInfoByMode: TGameInfoByMode = {
 };
 
 export type TGameCondition = "WIN" | "LOSE" | "INPROGRESS" | "NOTSTARTED";
+
+export type TWordResponse = {
+  text: string;
+  pos?: string;
+};
+export type TWordVerificationResponse = {
+  head: {};
+  def: TWordResponse[];
+};
+
+export type TDictonary = {
+  [key in TGameMode]: string[];
+};
