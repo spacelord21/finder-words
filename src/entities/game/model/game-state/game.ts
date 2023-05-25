@@ -92,14 +92,12 @@ export const saveState = createEvent();
 
 const fetchGameStateFromStorage = async (mode: TGameMode) => {
   const value = await AsyncStorage.getItem(mode);
-  // const condition = $gameCondition.getState();
   if (value) {
     const result: TGameState = JSON.parse(value);
-    console.log(result);
-
-    if (gameInfoByMode[mode].letters == result.word.length) {
+    if (result.attempt !== gameInfoByMode[mode].attempts) {
       return result;
     }
+    await AsyncStorage.removeItem(mode);
   }
   const array = $targets.getState()[mode];
   return { ...initialGameState, word: array[getRandomInt(array.length)] };
@@ -110,4 +108,20 @@ forward({
   to: setGameState,
 });
 
-const saveGameStateToStorage = async () => {};
+const saveGameStateToStorage = async () => {
+  const gameState = $gameState.getState();
+  const mode = $gameMode.getState();
+  const condition = $gameCondition.getState();
+  if (condition === "INPROGRESS" || condition === "NOTSTARTED") {
+    await AsyncStorage.setItem(mode, JSON.stringify(gameState));
+  }
+};
+
+export const saveGameStateFx = createEffect<void, void>(async () => {
+  return saveGameStateToStorage();
+});
+
+forward({
+  from: saveState,
+  to: saveGameStateFx,
+});

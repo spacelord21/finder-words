@@ -31,20 +31,19 @@ export const useCellColor = ({
     if (!value) return defaultColor;
     if (!isCurrentRow) {
       const wordArray = word.split("");
-      if (wordArray[index] != value) {
-        let quantityLikeValue = 0;
-        let quantityValueInGuess = 0;
-        wordArray.forEach((item, _) => {
-          if (item === value) quantityLikeValue++;
-        });
-        guess.split("").forEach((item, i) => {
-          if (item === value && i <= index) quantityValueInGuess++;
-        });
-        if (
-          wordArray.includes(value) &&
-          quantityLikeValue >= quantityValueInGuess
-        )
-          return wrongPlace;
+      let quantityLikeValue = 0;
+      let quantityValueInGuess = 0;
+      wordArray.forEach((item, _) => {
+        if (item === value) quantityLikeValue++;
+      });
+      guess.split("").forEach((item, i) => {
+        if (item === value) quantityValueInGuess++;
+      });
+      if (
+        wordArray[index] != value &&
+        quantityLikeValue >= quantityValueInGuess
+      ) {
+        if (wordArray.includes(value)) return wrongPlace;
       }
       if (wordArray[index] == value) return rightPlace;
 
