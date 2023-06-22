@@ -23,7 +23,7 @@ const Board = styled(FlatList<string>)`
   position: absolute;
   top: ${({ theme }) => theme.spacing(1)}px;
   margin-top: ${({ theme }) => theme.spacing(8)}px;
-  height: 65%;
+  height: 60%;
 `;
 
 const ButtonContainer = styled.View`
@@ -68,7 +68,6 @@ export const GameBoard = () => {
 
   return (
     <Container>
-      {/* <Title variant="largeTitle">Угадайте слово!</Title> */}
       <Board
         data={new Array(gameInfo[mode].attempts).fill(0)}
         renderItem={renderItem}

@@ -43,7 +43,7 @@ export const App = () => {
     }
   }, [isFontsLoaded, isThemeLoaded]);
 
-  if (!isFontsLoaded && !isThemeLoaded) {
+  if (!isFontsLoaded) {
     return <Text>Loading...</Text>;
   }
 

@@ -24,6 +24,7 @@ export const RowCells = ({
   rightWord,
 }: TRowCellsProps) => {
   const mockArray = new Array(wordLength).fill(0);
+
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
     return (
       <MemoCell

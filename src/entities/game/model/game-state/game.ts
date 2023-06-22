@@ -16,59 +16,86 @@ import {
   TGameCondition,
   TGameMode,
   TGameState,
+  TStorageGameState,
   gameInfoByMode,
 } from "../../../types";
 import { $guess, enterPress, resetGuess } from "../keyboard/model";
-import { $dictionary, $targets } from "../dictionaries";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { $dictionary } from "../dictionaries";
 import { checkGuessHandler } from "./check-guess";
-
-const initialGameState: TGameState = {
-  attempt: 0,
-  previousGuesses: [],
-  word: "слой",
-  correctLetters: [],
-  wrong: [],
-  wrongPlaceLetters: [],
-};
+import { initialGameState } from "./initial-state";
+import {
+  fetchGameStateFromStorage,
+  saveGameStateToStorage,
+} from "./storage-methods";
 
 export const $gameState = createStore<TGameState>(initialGameState);
 export const checkGuess = createEvent<string>();
 export const setGameState = createEvent<TGameState>();
 
-export const checkStorageFx = createEffect<TGameMode, TGameState>(
+export const checkStorageFx = createEffect<TGameMode, TStorageGameState>(
   async (mode) => {
     return await fetchGameStateFromStorage(mode);
   }
 );
 
-$gameState.on(setGameState, (state, payload) => {
-  return payload;
-});
-$gameState.on(checkGuess, (state, guess) => {
-  return checkGuessHandler(state, guess);
-});
+/* 
+  ALL EVENTS: 
+   1) check guess
+   2) set game state
+   3) reset guess
+   4) set game mode
+   5) set game condition
+   6) enter press
+   7) save state
+   8) set shown game results window
+   9) set guess
+   9) check storage
 
-forward({
-  from: checkGuess,
-  to: resetGuess,
-});
+   in game proccess order:
+    1) set game mode -> check storage -> set game state -> check guess -> save state 
+*/
 
+// check async storage after game mode set (1st in the order game proccess)
 forward({
   from: setGameMode,
   to: checkStorageFx,
 });
 
-const getRandomInt = (max: number) => {
-  return Math.floor(Math.random() * max);
-};
+// if game not finished => game will be continue (2nd in the order proccess)
 
+// forward({
+//   from: checkStorageFx.doneData,
+//   to: setGameState,
+// });
+
+checkStorageFx.doneData.watch((payload) => {
+  setGameState(payload.state);
+  setGameCondition(payload.condition);
+});
+
+// set game state (3rd in the order)
+$gameState.on(setGameState, (state, payload) => {
+  return payload;
+});
+
+// check guess
+$gameState.on(checkGuess, (state, guess) => {
+  return checkGuessHandler(state, guess);
+});
+
+// reset guess after check guess
+forward({
+  from: checkGuess,
+  to: resetGuess,
+});
+
+// checking WIN and LOSE after check guess
 sample({
   clock: checkGuess,
   source: $gameState,
   fn: (gameState, guess): TGameCondition => {
     if (guess == gameState.word) return "WIN";
-    if (gameState.attempt > gameState.word.length) {
+    if (gameState.attempt == gameInfoByMode[$gameMode.getState()].attempts) {
       return "LOSE";
     }
     return "INPROGRESS";
@@ -76,6 +103,7 @@ sample({
   target: setGameCondition,
 });
 
+// checking word length and containing in dictionary
 guard({
   clock: enterPress,
   source: $guess,
@@ -90,35 +118,17 @@ guard({
 
 export const saveState = createEvent();
 
-const fetchGameStateFromStorage = async (mode: TGameMode) => {
-  const value = await AsyncStorage.getItem(mode);
-  if (value) {
-    const result: TGameState = JSON.parse(value);
-    if (result.attempt !== gameInfoByMode[mode].attempts) {
-      return result;
-    }
-    await AsyncStorage.removeItem(mode);
-  }
-  const array = $targets.getState()[mode];
-  return { ...initialGameState, word: array[getRandomInt(array.length)] };
-};
-
+// set state in async storage after check guess
 forward({
-  from: checkStorageFx.doneData,
-  to: setGameState,
+  from: checkGuess,
+  to: saveState,
 });
 
-const saveGameStateToStorage = async () => {
+export const saveGameStateFx = createEffect<void, void>(async () => {
   const gameState = $gameState.getState();
   const mode = $gameMode.getState();
   const condition = $gameCondition.getState();
-  if (condition === "INPROGRESS" || condition === "NOTSTARTED") {
-    await AsyncStorage.setItem(mode, JSON.stringify(gameState));
-  }
-};
-
-export const saveGameStateFx = createEffect<void, void>(async () => {
-  return saveGameStateToStorage();
+  return await saveGameStateToStorage(gameState, mode, condition);
 });
 
 forward({

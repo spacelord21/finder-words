@@ -6,9 +6,10 @@ import {
   forward,
   sample,
 } from "effector";
+import { $gameState } from "../game-state";
 
 export const setGameCondition = createEvent<TGameCondition>();
-export const $gameCondition = createStore<TGameCondition>("LOSE").on(
+export const $gameCondition = createStore<TGameCondition>("NOTSTARTED").on(
   setGameCondition,
   (_, condition) => condition
 );
@@ -19,34 +20,16 @@ export const $gameMode = createStore<TGameMode>("4_LETTERS").on(
   (_, mode) => mode
 );
 
-setGameMode.watch(() => {
-  setGameCondition("INPROGRESS");
-});
-
 export const setShownGameResults = createEvent<boolean>();
-export const $gameResultsShown = createStore<boolean>(true).on(
+export const $gameResultsShown = createStore<boolean>(false).on(
   setShownGameResults,
   (_, payload) => payload
 );
 
-const RESULTS_SHOW_TIMEOUT =
-  gameInfoByMode[$gameMode.getState()].letters * 300 + 200;
-
-const timeoutFx = createEffect<void, boolean>(async () => {
-  return new Promise((res) => {
-    const condition = $gameCondition.getState();
-    setTimeout(() => {
-      condition == "LOSE" || condition == "WIN" ? res(true) : res(false);
-    }, RESULTS_SHOW_TIMEOUT);
-  });
-});
-
-forward({
-  from: setGameCondition,
-  to: timeoutFx,
-});
-
 sample({
-  clock: timeoutFx.doneData,
+  clock: setGameCondition,
+  fn: (condition) => {
+    return condition == "WIN" || condition == "LOSE";
+  },
   target: setShownGameResults,
 });

@@ -1,1 +1,1 @@
-export {};
+export { CustomKeyboard } from "./custom-keyboard";
