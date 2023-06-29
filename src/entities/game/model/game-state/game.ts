@@ -5,6 +5,7 @@ import {
   forward,
   guard,
   sample,
+  split,
 } from "effector";
 import {
   $gameCondition,
@@ -27,6 +28,7 @@ import {
   fetchGameStateFromStorage,
   saveGameStateToStorage,
 } from "./storage-methods";
+import { setShownAlert } from "@entities/alert";
 
 export const $gameState = createStore<TGameState>(initialGameState);
 export const checkGuess = createEvent<string>();
@@ -104,16 +106,37 @@ sample({
 });
 
 // checking word length and containing in dictionary
-guard({
+
+const checkLength = sample({
   clock: enterPress,
   source: $guess,
-  filter: (guess, _) => {
-    return (
-      guess.length == $gameState.getState().word.length &&
-      $dictionary.getState()[$gameMode.getState()].includes(guess)
-    );
+  fn: (guess, _) => guess.length == $gameState.getState().word.length,
+});
+
+const checkInDictionary = sample({
+  clock: checkLength,
+  source: $guess,
+  fn: (guess, _) =>
+    guess.length == $gameState.getState().word.length &&
+    $dictionary.getState()[$gameMode.getState()].includes(guess),
+});
+
+guard({
+  clock: checkInDictionary,
+  source: $guess,
+  filter: (guess, checked) => {
+    return checked;
   },
   target: checkGuess,
+});
+
+guard({
+  clock: checkInDictionary,
+  source: checkLength,
+  filter: (isCorrectLength, checked) => {
+    return !checked && isCorrectLength;
+  },
+  target: setShownAlert,
 });
 
 export const saveState = createEvent();

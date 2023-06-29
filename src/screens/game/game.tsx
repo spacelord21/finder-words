@@ -8,6 +8,7 @@ import { $gameCondition, $gameResultsShown, saveState } from "@entities/game";
 import Confetti from "react-native-confetti";
 import { useTheme } from "styled-components";
 import { useConfetti } from "./ui/atoms/cell/hooks";
+import { $shownAlert, Alert } from "@entities/alert";
 
 const Container = styled.View`
   flex: 1;
@@ -41,6 +42,7 @@ type Navigation = NativeStackNavigationProp<TMainStackParamList, "game">;
 
 export const Game = () => {
   const navigation = useNavigation<Navigation>();
+  const alert = useStore($shownAlert);
   const isResultsShown = useStore($gameResultsShown);
   const condition = useStore($gameCondition);
   const theme = useTheme();
@@ -55,6 +57,7 @@ export const Game = () => {
 
   return (
     <Container>
+      {alert && <Alert />}
       <IconBackWrapper onPress={backPressHandler} activeOpacity={0.7}>
         <Back color={theme.palette.text.blue} />
         <Text variant="subtitle">Выбрать режим</Text>
