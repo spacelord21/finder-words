@@ -7,7 +7,7 @@ import { useStore } from "effector-react";
 import { $gameCondition, $gameResultsShown, saveState } from "@entities/game";
 import Confetti from "react-native-confetti";
 import { useTheme } from "styled-components";
-import { RefObject, useEffect, useRef } from "react";
+import { useConfetti } from "./ui/atoms/cell/hooks";
 
 const Container = styled.View`
   flex: 1;
@@ -44,7 +44,7 @@ export const Game = () => {
   const isResultsShown = useStore($gameResultsShown);
   const condition = useStore($gameCondition);
   const theme = useTheme();
-  const confitiRef = useRef<Confetti | null>(null);
+  const { confetti } = useConfetti(isResultsShown, condition);
 
   const backPressHandler = () => {
     navigation.navigate("main");
@@ -52,18 +52,6 @@ export const Game = () => {
       saveState();
     }
   };
-
-  useEffect(() => {
-    if (
-      confitiRef &&
-      confitiRef.current &&
-      isResultsShown &&
-      condition === "WIN"
-    ) {
-      confitiRef.current.startConfetti();
-    }
-    return () => confitiRef.current?.stopConfetti();
-  }, [isResultsShown, confitiRef, condition]);
 
   return (
     <Container>
@@ -75,7 +63,7 @@ export const Game = () => {
         <ConfettiContainer>
           <Confetti
             size={2}
-            ref={(node) => (confitiRef.current = node)}
+            ref={(node) => (confetti.current = node)}
             duration={1700}
             untilStopped={true}
           />
