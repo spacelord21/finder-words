@@ -7,7 +7,8 @@ import { useStore } from "effector-react";
 import { $gameCondition, $gameResultsShown, saveState } from "@entities/game";
 import Confetti from "react-native-confetti";
 import { useTheme } from "styled-components";
-import { RefObject, useEffect, useRef } from "react";
+import { useConfetti } from "./ui/atoms/cell/hooks";
+import { $shownAlert, Alert } from "@entities/alert";
 
 const Container = styled.View`
   flex: 1;
@@ -41,10 +42,11 @@ type Navigation = NativeStackNavigationProp<TMainStackParamList, "game">;
 
 export const Game = () => {
   const navigation = useNavigation<Navigation>();
+  const alert = useStore($shownAlert);
   const isResultsShown = useStore($gameResultsShown);
   const condition = useStore($gameCondition);
   const theme = useTheme();
-  const confitiRef = useRef<Confetti | null>(null);
+  const { confetti } = useConfetti(isResultsShown, condition);
 
   const backPressHandler = () => {
     navigation.navigate("main");
@@ -53,20 +55,9 @@ export const Game = () => {
     }
   };
 
-  useEffect(() => {
-    if (
-      confitiRef &&
-      confitiRef.current &&
-      isResultsShown &&
-      condition === "WIN"
-    ) {
-      confitiRef.current.startConfetti();
-    }
-    return () => confitiRef.current?.stopConfetti();
-  }, [isResultsShown, confitiRef, condition]);
-
   return (
     <Container>
+      {alert && <Alert />}
       <IconBackWrapper onPress={backPressHandler} activeOpacity={0.7}>
         <Back color={theme.palette.text.blue} />
         <Text variant="subtitle">Выбрать режим</Text>
@@ -75,7 +66,7 @@ export const Game = () => {
         <ConfettiContainer>
           <Confetti
             size={2}
-            ref={(node) => (confitiRef.current = node)}
+            ref={(node) => (confetti.current = node)}
             duration={1700}
             untilStopped={true}
           />

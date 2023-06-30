@@ -16,8 +16,6 @@ export const fetchGameStateFromStorage = async (
   mode: TGameMode
 ): Promise<TStorageGameState> => {
   const value = await AsyncStorage.getItem(mode);
-  console.log(value);
-
   if (value) {
     const result: TStorageGameState = await JSON.parse(value);
     if (isCorrectState(result.condition)) {
