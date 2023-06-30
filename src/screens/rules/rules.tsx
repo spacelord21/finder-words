@@ -62,12 +62,12 @@ export const Rules = () => {
         <Separator />
         <Text variant="body20">{text5}</Text>
         <RowCells
-          rightWord="дефис"
+          rightWord="икра"
           cellHeight={cellSize + 10}
           cellWidth={cellSize}
           isCurrent={false}
-          word="дерби"
-          wordLength={5}
+          word="крик"
+          wordLength={4}
         />
         <Text variant="body20">{text6}</Text>
         <Separator />

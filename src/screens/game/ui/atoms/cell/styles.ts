@@ -1,4 +1,5 @@
 import { Typography, styled } from "@shared/ui";
+import { Dimensions } from "react-native";
 
 type TCell = {
   cellWidth: number;

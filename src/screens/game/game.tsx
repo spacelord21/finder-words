@@ -5,8 +5,9 @@ import { TMainStackParamList } from "@app/navigation/types";
 import { useNavigation } from "@react-navigation/native";
 import { useStore } from "effector-react";
 import { $gameCondition, $gameResultsShown, saveState } from "@entities/game";
-import ConfettiCannon from "react-native-confetti-cannon";
+import Confetti from "react-native-confetti";
 import { useTheme } from "styled-components";
+import { RefObject, useEffect, useRef } from "react";
 
 const Container = styled.View`
   flex: 1;
@@ -29,12 +30,11 @@ const Text = styled(Typography)`
   color: ${({ theme }) => theme.palette.text.blue};
 `;
 
-const Confitti = styled.View`
-  /* z-index: 50; */
+const ConfettiContainer = styled.View`
   position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
+  top: ${({ theme }) => theme.spacing(5)}px;
+  left: 0;
+  z-index: 100;
 `;
 
 type Navigation = NativeStackNavigationProp<TMainStackParamList, "game">;
@@ -44,6 +44,7 @@ export const Game = () => {
   const isResultsShown = useStore($gameResultsShown);
   const condition = useStore($gameCondition);
   const theme = useTheme();
+  const confitiRef = useRef<Confetti | null>(null);
 
   const backPressHandler = () => {
     navigation.navigate("main");
@@ -52,6 +53,18 @@ export const Game = () => {
     }
   };
 
+  useEffect(() => {
+    if (
+      confitiRef &&
+      confitiRef.current &&
+      isResultsShown &&
+      condition === "WIN"
+    ) {
+      confitiRef.current.startConfetti();
+    }
+    return () => confitiRef.current?.stopConfetti();
+  }, [isResultsShown, confitiRef, condition]);
+
   return (
     <Container>
       <IconBackWrapper onPress={backPressHandler} activeOpacity={0.7}>
@@ -59,9 +72,14 @@ export const Game = () => {
         <Text variant="subtitle">Выбрать режим</Text>
       </IconBackWrapper>
       {condition == "WIN" ? (
-        <Confitti>
-          <ConfettiCannon count={100} origin={{ x: -10, y: 0 }} />
-        </Confitti>
+        <ConfettiContainer>
+          <Confetti
+            size={2}
+            ref={(node) => (confitiRef.current = node)}
+            duration={1700}
+            untilStopped={true}
+          />
+        </ConfettiContainer>
       ) : null}
       {isResultsShown ? <GameResults /> : null}
       <GameBoard />

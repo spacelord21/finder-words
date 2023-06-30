@@ -52,3 +52,8 @@ export type TGameState = {
   wrongPlaceLetters: string[];
   wrong: string[];
 };
+
+export type TStorageGameState = {
+  state: TGameState;
+  condition: TGameCondition;
+};

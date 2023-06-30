@@ -18,7 +18,6 @@ export const useCellColor = ({
   guess,
   rightWord: word,
 }: THookArgs) => {
-  // const { word } = useStore($gameState);
   const theme = useTheme();
   const rightPlace = theme.palette.gameboard.rightPlace;
   const wrongPlace = theme.palette.gameboard.wrongPlace;
@@ -31,22 +30,32 @@ export const useCellColor = ({
     if (!value) return defaultColor;
     if (!isCurrentRow) {
       const wordArray = word.split("");
-      if (wordArray[index] != value) {
-        let quantityLikeValue = 0;
-        let quantityValueInGuess = 0;
-        wordArray.forEach((item, _) => {
-          if (item === value) quantityLikeValue++;
-        });
-        guess.split("").forEach((item, i) => {
-          if (item === value && i <= index) quantityValueInGuess++;
-        });
-        if (
-          wordArray.includes(value) &&
-          quantityLikeValue >= quantityValueInGuess
-        )
-          return wrongPlace;
-      }
       if (wordArray[index] == value) return rightPlace;
+      if (wordArray[index] != value) {
+        if (wordArray.includes(value)) {
+          const guessArray = guess.split("");
+          const sameLettersInRight = wordArray.filter(
+            (item, index) => item === value && wordArray[index] != item
+          ).length;
+          let j = 0;
+          const sameLettersInGuess = guess
+            .split("")
+            .filter(
+              (item, index) => item === wordArray[index] && item === value
+            ).length;
+          let shouldPaint = true;
+          for (let i = 0; i <= index; i++) {
+            if (j > sameLettersInRight - sameLettersInGuess) {
+              shouldPaint = false;
+              break;
+            }
+            if (guessArray[i] == value) {
+              j++;
+            }
+          }
+          if (shouldPaint) return wrongPlace;
+        }
+      }
 
       return wrongColor;
     }

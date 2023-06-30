@@ -6,6 +6,7 @@ import {
   $gameCondition,
   $gameMode,
   $gameState,
+  setGameCondition,
   setGameMode,
   setShownGameResults,
 } from "@entities/game";
@@ -23,6 +24,13 @@ export const GameResults = React.memo(() => {
   const mode = useStore($gameMode);
   const gameInfo = gameInfoByMode;
   const result = condition == "WIN" ? "Победа!" : "Поражение!";
+
+  const onNextWordClickHandler = () => {
+    setGameMode(mode);
+    setGameCondition("INPROGRESS");
+    setShownGameResults(false);
+  };
+
   return (
     <Container activeOpacity={1}>
       <Window style={{ width: windowSize, height: windowSize + 64 }}>
@@ -43,9 +51,7 @@ export const GameResults = React.memo(() => {
           {attempt} попыток из {gameInfo[mode].attempts}
         </Text>
         <PrimaryButton
-          onPress={() => {
-            setGameMode(mode);
-          }}
+          onPress={onNextWordClickHandler}
           textColor={
             theme.name == "light" ? "#ffffff" : theme.palette.text.primary
           }
