@@ -5,6 +5,7 @@ import { Game } from "@screens/game";
 import { Settings } from "@screens/settings";
 import { useTheme } from "styled-components";
 import { Rules } from "@screens/rules";
+import { TabNavigation } from "../tab-navigation";
 
 const Stack = createNativeStackNavigator<TMainStackParamList>();
 const defaultOptions = {
@@ -14,27 +15,15 @@ const defaultOptions = {
 export const MainStackNavigation = () => {
   const theme = useTheme();
   return (
-    <Stack.Navigator initialRouteName="main">
+    <Stack.Navigator initialRouteName="bottomsTabs">
       <Stack.Screen
-        name="main"
-        component={Menu}
+        name="bottomsTabs"
+        component={TabNavigation}
         options={{ ...defaultOptions }}
       />
       <Stack.Screen
         name="game"
         component={Game}
-        options={{ ...defaultOptions }}
-      />
-      <Stack.Screen
-        name="settings"
-        component={Settings}
-        options={{
-          ...defaultOptions,
-        }}
-      />
-      <Stack.Screen
-        name="rules"
-        component={Rules}
         options={{ ...defaultOptions }}
       />
     </Stack.Navigator>

@@ -49,7 +49,7 @@ export const Game = () => {
   const { confetti } = useConfetti(isResultsShown, condition);
 
   const backPressHandler = () => {
-    navigation.navigate("main");
+    navigation.navigate("bottomsTabs");
     if (condition == "INPROGRESS") {
       saveState();
     }

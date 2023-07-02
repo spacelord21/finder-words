@@ -13,7 +13,7 @@ import {
 import { gameInfoByMode } from "@entities/types";
 import { useTheme } from "styled-components";
 import React from "react";
-import { Container, IconWrapper, Text, Window } from "./styles";
+import { Container, IconWrapper, Text, Window, Separator } from "./styles";
 
 const windowSize = Dimensions.get("screen").width - 32;
 
@@ -33,10 +33,16 @@ export const GameResults = React.memo(() => {
 
   return (
     <Container activeOpacity={1}>
-      <Window style={{ width: windowSize, height: windowSize + 64 }}>
+      <Window
+        style={{
+          width: windowSize - 8,
+          height: 1.5 * windowSize,
+        }}
+      >
         <Text variant="title" style={{ marginVertical: theme.spacing(2) }}>
           {result}
         </Text>
+        <Separator width={windowSize - 8} />
         <IconWrapper onPress={() => setShownGameResults(false)}>
           <Close />
         </IconWrapper>

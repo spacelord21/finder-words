@@ -8,12 +8,13 @@ const Container = styled.View`
 
 const Text = styled(Typography)`
   color: ${({ theme }) => theme.palette.text.blue};
+  letter-spacing: 4px;
 `;
 
 export const Title = () => {
   return (
     <Container>
-      <Text variant="largeTitle">Finder Words</Text>
+      <Text variant="largeTitle">FINDER WORDS</Text>
     </Container>
   );
 };

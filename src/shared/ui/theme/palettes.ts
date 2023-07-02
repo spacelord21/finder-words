@@ -3,6 +3,7 @@ export const defaultDarkPalette = {
     primary: "#0a1929",
     secondary: "#132f4c",
     tertiary: "#787c7e",
+    dark: "#132f4c",
   },
   text: {
     primary: "#FFFFFF",
@@ -14,6 +15,7 @@ export const defaultDarkPalette = {
     primary: "#66b2ff",
     success: "#6aaa64",
     wrongPlace: "#c9b458",
+    dark: "#1a1a1b",
   },
   button: {
     primary: "#66b2ff",
@@ -25,6 +27,7 @@ export const defaultLightPalette = {
     primary: "#f3f3f3",
     secondary: "#66b2ff",
     tertiary: "#dadada",
+    dark: "#132f4c",
   },
   text: {
     primary: "#1a1a1b",
@@ -36,6 +39,7 @@ export const defaultLightPalette = {
     primary: "#66b2ff",
     success: "#6aaa64",
     wrongPlace: "#c9b458",
+    dark: "#1a1a1b",
   },
   button: {
     primary: "#66b2ff",

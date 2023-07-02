@@ -1,7 +1,10 @@
-import { TMainStackParamList } from "@app/navigation/types";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { TBottomTabsParamList } from "@app/navigation/types";
 import { Header, Separator, Typography, styled } from "@shared/ui";
-import { useNavigation } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from "@react-navigation/native";
 import {
   text1,
   text2,
@@ -14,6 +17,8 @@ import {
 } from "./texts";
 import { Dimensions } from "react-native";
 import { RowCells } from "@screens/game/ui";
+import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs";
+import { useEffect } from "react";
 
 const Container = styled.View`
   flex: 1;
@@ -32,13 +37,17 @@ const Text = styled(Typography)`
   margin-bottom: ${({ theme }) => theme.spacing(1)}px;
 `;
 
-type Navigation = NativeStackNavigationProp<TMainStackParamList, "rules">;
+type Navigation = MaterialBottomTabNavigationProp<
+  TBottomTabsParamList,
+  "rules"
+>;
 
 export const Rules = () => {
   const navigation = useNavigation<Navigation>();
   const cellSize = Dimensions.get("screen").width / 5 - 16;
+  const isFocused = useIsFocused();
 
-  return (
+  return isFocused ? (
     <Container>
       <Header title="Правила" onPressLeft={() => navigation.navigate("main")} />
       <Scroll
@@ -62,12 +71,12 @@ export const Rules = () => {
         <Separator />
         <Text variant="body20">{text5}</Text>
         <RowCells
-          rightWord="икра"
+          rightWord="дефис"
           cellHeight={cellSize + 10}
           cellWidth={cellSize}
           isCurrent={false}
-          word="крик"
-          wordLength={4}
+          word="дерби"
+          wordLength={5}
         />
         <Text variant="body20">{text6}</Text>
         <Separator />
@@ -84,5 +93,5 @@ export const Rules = () => {
         <Text variant="body20">{text8}</Text>
       </Scroll>
     </Container>
-  );
+  ) : null;
 };

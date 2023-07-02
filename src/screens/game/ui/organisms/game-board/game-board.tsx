@@ -9,7 +9,7 @@ import {
 import { gameInfoByMode } from "@entities/types";
 import { PrimaryButton, styled } from "@shared/ui";
 import { useStore } from "effector-react";
-import { MemoRowCells } from "../../molecules";
+import { Buttons, MemoRowCells } from "../../molecules";
 import { FlatList, ListRenderItem, Dimensions } from "react-native";
 import { CustomKeyboard } from "@widgets/custom-keyboard";
 
@@ -32,7 +32,7 @@ const ButtonContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  margin-bottom: ${({ theme }) => theme.spacing(5)}px;
+  margin-bottom: ${({ theme }) => theme.spacing(2)}px;
   z-index: 100;
 `;
 
@@ -46,6 +46,7 @@ export const GameBoard = () => {
   const cellHeight =
     (Dimensions.get("screen").height * 0.53) / gameInfo[mode].attempts;
   const condition = useStore($gameCondition);
+  console.log(word);
 
   const renderItem: ListRenderItem<string> = ({ item, index }) => {
     return (
@@ -78,22 +79,14 @@ export const GameBoard = () => {
         }}
       />
       {condition === "WIN" || condition === "LOSE" ? (
-        <ButtonContainer>
-          <PrimaryButton
-            onPress={() => {
-              setShownGameResults(true);
-            }}
-          >
-            Результат
-          </PrimaryButton>
-          <PrimaryButton
-            onPress={() => {
-              setGameMode(mode);
-            }}
-          >
-            Следующее слово
-          </PrimaryButton>
-        </ButtonContainer>
+        <Buttons
+          onNextWordPresHandler={() => {
+            setGameMode(mode);
+          }}
+          onResultsPressHandler={() => {
+            setShownGameResults(true);
+          }}
+        />
       ) : (
         <CustomKeyboard />
       )}
