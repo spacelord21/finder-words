@@ -1,9 +1,10 @@
 import { Typography, styled } from "@shared/ui";
 import { keyboard } from "./keyboard";
 import { MemoButton } from "./button";
-import { Dimensions, FlatList, ListRenderItem } from "react-native";
-import { useButtonsColor } from "./hooks";
-import { enterPress } from "@entities/game";
+import { Animated, Dimensions, FlatList, ListRenderItem } from "react-native";
+import { useEnterPulsation } from "./hooks";
+import { $guess, enterPress } from "@entities/game";
+import { useStore } from "effector-react";
 
 const Container = styled.View`
   flex: 1;
@@ -32,6 +33,8 @@ const EnterText = styled(Typography)`
 export const CustomKeyboard = () => {
   const buttonSize =
     Dimensions.get("screen").width / keyboard["firstLevel"].length - 4;
+  const guess = useStore($guess);
+  const { pulsating } = useEnterPulsation(guess);
 
   const renderButton: ListRenderItem<string> = ({ item: content }) => {
     return <MemoButton buttonSize={buttonSize} content={content} />;
@@ -64,9 +67,22 @@ export const CustomKeyboard = () => {
           alignContent: "center",
         }}
       />
-      <EnterButton onPress={() => enterPress()} activeOpacity={0.7}>
-        <EnterText variant="title">Готово</EnterText>
-      </EnterButton>
+      <Animated.View
+        style={{
+          transform: [
+            {
+              scale: pulsating,
+            },
+          ],
+          width: "95%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <EnterButton onPress={() => enterPress()} activeOpacity={0.7}>
+          <EnterText variant="title">Готово</EnterText>
+        </EnterButton>
+      </Animated.View>
     </Container>
   );
 };

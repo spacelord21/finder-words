@@ -28,6 +28,7 @@ export const useCellColor = ({
 
   const color = useMemo(() => {
     if (!value) return defaultColor;
+    // if (!value) return defaultColor;
     if (!isCurrentRow) {
       const wordArray = word.split("");
       if (wordArray[index] == value) return rightPlace;
@@ -61,6 +62,22 @@ export const useCellColor = ({
     }
     return defaultColor;
   }, [value, isCurrentRow]);
+
+  const cellColor = useMemo(() => {
+    if (!value) return defaultColor;
+    const wordArray = word.split("");
+    if (!wordArray.includes(value)) return wrongColor; // если нет буквы в слове
+    if (wordArray[index] == value) return rightPlace; // если есть и стоит на своем месте
+  }, [value]);
+
+  /*
+   если буквы в слове нет, то WRONGCOLOR, если есть и на своем месте, то RIGHTCOLOR, 
+   иначе пиздец какой то
+   слово ПАПАША, ввели 
+   АЭАЭАЭ - 3 желтых,
+   ПААЭАЭ - 1 зеленая, 2 желтых,
+   ПАПААЭ - 2 зеленых 1 желтая
+  */
 
   const letterColor = useMemo(() => {
     if (theme.name == "dark") return whiteLetter;

@@ -24,15 +24,14 @@ const Text = styled(Typography)`
 `;
 
 export const Menu = () => {
-  const pressHandler = async () => {
-    await AsyncStorage.clear();
-  };
+  // const isLoading = useStore()
+
   return (
     <Container>
       <Title />
-      <CategoryItem activeOpacity={0.7} onPress={pressHandler}>
+      {/* <CategoryItem activeOpacity={0.7} onPress={pressHandler}>
         <Text variant="title">Сбросить стор</Text>
-      </CategoryItem>
+      </CategoryItem> */}
       <Categories />
     </Container>
   );

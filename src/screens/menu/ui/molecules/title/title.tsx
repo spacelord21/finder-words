@@ -1,7 +1,7 @@
 import { Typography, styled } from "@shared/ui";
 
 const Container = styled.View`
-  margin-top: ${({ theme }) => theme.spacing(14)}px;
+  margin-top: ${({ theme }) => theme.spacing(20)}px;
   justify-content: center;
   align-items: center;
 `;

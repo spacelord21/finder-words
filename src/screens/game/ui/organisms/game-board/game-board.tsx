@@ -12,6 +12,7 @@ import { useStore } from "effector-react";
 import { Buttons, MemoRowCells } from "../../molecules";
 import { FlatList, ListRenderItem, Dimensions } from "react-native";
 import { CustomKeyboard } from "@widgets/custom-keyboard";
+import React from "react";
 
 const Container = styled.View`
   flex: 1;
@@ -24,16 +25,6 @@ const Board = styled(FlatList<string>)`
   top: ${({ theme }) => theme.spacing(1)}px;
   margin-top: ${({ theme }) => theme.spacing(8)}px;
   height: 60%;
-`;
-
-const ButtonContainer = styled.View`
-  position: absolute;
-  bottom: ${({ theme }) => theme.spacing(2)}px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  margin-bottom: ${({ theme }) => theme.spacing(2)}px;
-  z-index: 100;
 `;
 
 export const GameBoard = () => {

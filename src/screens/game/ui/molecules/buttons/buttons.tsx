@@ -5,7 +5,7 @@ const ButtonContainer = styled.View`
   bottom: ${({ theme }) => theme.spacing(2)}px;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: ${({ theme }) => theme.spacing(2)}px;
   z-index: 100;
 `;

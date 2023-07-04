@@ -1,4 +1,4 @@
-import { Close, PrimaryButton } from "@shared/ui";
+import { PrimaryButton } from "@shared/ui";
 import { Dimensions } from "react-native";
 import { ResultGrid } from "../../molecules";
 import { useStore } from "effector-react";
@@ -13,7 +13,8 @@ import {
 import { gameInfoByMode } from "@entities/types";
 import { useTheme } from "styled-components";
 import React from "react";
-import { Container, IconWrapper, Text, Window, Separator } from "./styles";
+import { Text, Separator } from "./styles";
+import { PopUpWindow } from "@widgets/pop-up-window";
 
 const windowSize = Dimensions.get("screen").width - 32;
 
@@ -32,39 +33,29 @@ export const GameResults = React.memo(() => {
   };
 
   return (
-    <Container activeOpacity={1}>
-      <Window
-        style={{
-          width: windowSize - 8,
-          height: 1.5 * windowSize,
-        }}
+    <PopUpWindow onClosePressHandler={() => setShownGameResults(false)}>
+      <Text variant="title" style={{ marginVertical: theme.spacing(2) }}>
+        {result}
+      </Text>
+      <Separator width={windowSize - 8} />
+      <ResultGrid />
+      <Text variant="subtitle">
+        Загаданное слово:{" "}
+        <Text variant="subtitle" style={{ fontWeight: "bold" }}>
+          {word}
+        </Text>
+      </Text>
+      <Text variant="body16">
+        {attempt} попыток из {gameInfo[mode].attempts}
+      </Text>
+      <PrimaryButton
+        onPress={onNextWordClickHandler}
+        textColor={
+          theme.name == "light" ? "#ffffff" : theme.palette.text.primary
+        }
       >
-        <Text variant="title" style={{ marginVertical: theme.spacing(2) }}>
-          {result}
-        </Text>
-        <Separator width={windowSize - 8} />
-        <IconWrapper onPress={() => setShownGameResults(false)}>
-          <Close />
-        </IconWrapper>
-        <ResultGrid />
-        <Text variant="subtitle">
-          Загаданное слово:{" "}
-          <Text variant="subtitle" style={{ fontWeight: "bold" }}>
-            {word}
-          </Text>
-        </Text>
-        <Text variant="body16">
-          {attempt} попыток из {gameInfo[mode].attempts}
-        </Text>
-        <PrimaryButton
-          onPress={onNextWordClickHandler}
-          textColor={
-            theme.name == "light" ? "#ffffff" : theme.palette.text.primary
-          }
-        >
-          Следующее слово
-        </PrimaryButton>
-      </Window>
-    </Container>
+        Следующее слово
+      </PrimaryButton>
+    </PopUpWindow>
   );
 });

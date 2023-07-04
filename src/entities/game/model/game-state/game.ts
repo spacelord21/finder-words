@@ -20,7 +20,7 @@ import {
   TStorageGameState,
   gameInfoByMode,
 } from "../../../types";
-import { $guess, enterPress, resetGuess } from "../keyboard/model";
+import { $guess, enterPress, resetGuess, setGuess } from "../keyboard/model";
 import { $dictionary } from "../dictionaries";
 import { checkGuessHandler } from "./check-guess";
 import { initialGameState } from "./initial-state";
@@ -63,12 +63,18 @@ forward({
   to: checkStorageFx,
 });
 
-// if game not finished => game will be continue (2nd in the order proccess)
-
-// forward({
-//   from: checkStorageFx.doneData,
-//   to: setGameState,
-// });
+$guess.on(setGuess, (state, content) => {
+  switch (content) {
+    case "<": {
+      return state.slice(0, state.length - 1);
+    }
+    default: {
+      return state.length == $gameState.getState().word.length
+        ? state
+        : state + content;
+    }
+  }
+});
 
 checkStorageFx.doneData.watch((payload) => {
   setGameState(payload.state);
