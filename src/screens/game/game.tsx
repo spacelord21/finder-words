@@ -7,7 +7,7 @@ import { useStore } from "effector-react";
 import { $gameCondition, $gameResultsShown, saveState } from "@entities/game";
 import Confetti from "react-native-confetti";
 import { useTheme } from "styled-components";
-import { useConfetti } from "./ui/atoms/cell/hooks";
+import { useConfetti } from "@features/confetti";
 import { $shownAlert, Alert } from "@entities/alert";
 
 const Container = styled.View`
@@ -20,7 +20,7 @@ const Container = styled.View`
 const IconBackWrapper = styled.TouchableOpacity`
   position: absolute;
   left: ${({ theme }) => theme.spacing(3)}px;
-  top: ${({ theme }) => theme.spacing(4)}px;
+  top: ${({ theme }) => theme.spacing(5)}px;
   justify-content: center;
   align-items: center;
   z-index: 100;
