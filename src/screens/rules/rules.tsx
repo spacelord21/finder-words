@@ -1,10 +1,6 @@
 import { TBottomTabsParamList } from "@app/navigation/types";
 import { Header, Separator, Typography, styled } from "@shared/ui";
-import {
-  useFocusEffect,
-  useIsFocused,
-  useNavigation,
-} from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import {
   text1,
   text2,
@@ -18,7 +14,6 @@ import {
 import { Dimensions } from "react-native";
 import { RowCells } from "@screens/game/ui";
 import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs";
-import { useEffect } from "react";
 
 const Container = styled.View`
   flex: 1;
@@ -71,12 +66,12 @@ export const Rules = () => {
         <Separator />
         <Text variant="body20">{text5}</Text>
         <RowCells
-          rightWord="цена"
+          rightWord="дефис"
           cellHeight={cellSize + 10}
           cellWidth={cellSize}
           isCurrent={false}
-          word="мама"
-          wordLength={4}
+          word="дерби"
+          wordLength={5}
         />
         <Text variant="body20">{text6}</Text>
         <Separator />

@@ -1,18 +1,18 @@
 import { Typography, styled } from "@shared/ui";
 import { Animated } from "react-native";
 import { useAnimation } from "./hooks";
+import { $gameMode } from "../../game";
+import { useStore } from "effector-react";
 
 const Container = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.palette.accent.primary};
-  width: 80%;
+  width: 100%;
   height: 120px;
-  position: absolute;
   border-radius: 8px;
-  top: ${({ theme }) => theme.spacing(4)}px;
-  z-index: 5100;
+  position: absolute;
 `;
 
 const Text = styled(Typography)`
@@ -21,16 +21,36 @@ const Text = styled(Typography)`
 `;
 
 export const Alert = () => {
-  const suggestionWord = "ТЬМА";
-  const {} = useAnimation();
+  const mode = useStore($gameMode);
+  const suggestionWord = () => {
+    switch (mode) {
+      case "4_LETTERS":
+        return "МАМА";
+      case "5_LETTERS":
+        return "СЕМЬЯ";
+      case "6_LETTERS":
+        return "РОДИНА";
+    }
+  };
+  const { appearance } = useAnimation();
   return (
-    <Container>
-      <Animated.View style={{ zIndex: 500, left: 0 }}>
+    <Animated.View
+      style={{
+        zIndex: 500,
+        transform: [
+          {
+            translateY: appearance,
+          },
+        ],
+        width: "80%",
+      }}
+    >
+      <Container>
         <Text variant="subtitle">
           В нашем словаре нет данного слова! Попробуйте другое, например,{" "}
-          {suggestionWord}.
+          {suggestionWord()}.
         </Text>
-      </Animated.View>
-    </Container>
+      </Container>
+    </Animated.View>
   );
 };
