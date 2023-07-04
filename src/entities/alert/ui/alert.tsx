@@ -8,7 +8,7 @@ const Container = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.palette.accent.primary};
+  background-color: ${({ theme }) => theme.palette.background.secondary};
   width: 100%;
   height: 120px;
   border-radius: 8px;
@@ -16,8 +16,9 @@ const Container = styled.View`
 `;
 
 const Text = styled(Typography)`
-  color: ${({ theme }) => theme.palette.text.primary};
+  color: ${({ theme }) => theme.palette.text.secondary};
   text-align: center;
+  line-height: 28px;
 `;
 
 export const Alert = () => {

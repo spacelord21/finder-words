@@ -16,6 +16,7 @@ export const defaultDarkPalette = {
     success: "#6aaa64",
     wrongPlace: "#c9b458",
     dark: "#1a1a1b",
+    alert: "#DB2E30",
   },
   button: {
     primary: "#66b2ff",
@@ -40,6 +41,7 @@ export const defaultLightPalette = {
     success: "#6aaa64",
     wrongPlace: "#c9b458",
     dark: "#1a1a1b",
+    alert: "#DB2E30",
   },
   button: {
     primary: "#66b2ff",
